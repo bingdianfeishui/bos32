@@ -74,7 +74,7 @@
 		window.setTimeout(function(){
 			$.messager.show({
 				title:"消息提示",
-				msg:'欢迎登录，超级管理员！ <a href="javascript:void" onclick="top.showAbout();">联系管理员</a>',
+				msg:'欢迎登录，${loginUser.username}！ <a href="javascript:void" onclick="top.showAbout();">联系管理员</a>',
 				timeout:5000
 			});
 		},3000);
@@ -142,7 +142,7 @@
 		$.messager
 		.confirm('系统提示','您确定要退出本次登录吗?',function(isConfirm) {
 			if (isConfirm) {
-				location.href = '${pageContext.request.contextPath }/login.jsp';
+				location.href = '/userAction_logout.action';
 			}
 		});
 	}
@@ -161,7 +161,7 @@
 		style="height:80px;padding:10px;background:url('./images/header_bg.png') no-repeat right;">
 		<div id="sessionInfoDiv"
 			style="position: absolute;right: 5px;top:10px;">
-			[<strong>超级管理员</strong>]，欢迎你！
+			[<strong>${loginUser.username}</strong>]，欢迎你！
 		</div>
 		<div style="position: absolute; right: 5px; bottom: 10px; ">
 			<a href="javascript:void(0);" class="easyui-menubutton"

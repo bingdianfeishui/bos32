@@ -38,9 +38,9 @@
 			</props>
 		</property>
 		<!-- hibernate映射文件 -->
-		<property name="mappingJarLocations">
+		<property name="mappingLocations">
 			<list>
-				<value>classpath:com/itheima/bos/domain/*.hbm.xml</value>
+				<value>classpath:com/itheima/bos/domain/*.xml</value>
 			</list>
 		</property>
 	</bean>
