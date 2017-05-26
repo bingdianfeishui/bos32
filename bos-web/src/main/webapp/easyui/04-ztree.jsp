@@ -16,8 +16,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="js/easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="js/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/ztree/zTreeStyle.css">
 	<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
 	<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="js/ztree/jquery.ztree.all-3.5.js"></script>
 	
 </head>
 <body class="easyui-layout">
@@ -27,17 +29,54 @@ String basePath = request.getScheme()+"://"+request.getServerName()
 			<div data-options="iconCls:'icon-add'" title="面板1">
 				<a id="addTabs" class="easyui-linkbutton">新增tab</a>
 			</div>
-			<div data-options="iconCls:'icon-remove'" title="面板2">系统配置2</div>
+			<div data-options="iconCls:'icon-remove'" title="zTree">
+				<ul class="ztree" id="tr"></ul>
+				<script type="text/javascript">
+					$(function(){
+						var setting={
+							data:{
+								simpleData:{
+									enable:true
+								}
+							},
+							callback:{
+ 								onClick:function(event, treeId, treeNode){
+									if(treeNode.page){	//json节点中有page属性
+										var e = $("#tt").tabs('exists', treeNode.name);
+										if(e){
+											$("#tt").tabs('select', treeNode.name);
+										}else{
+											$("#tt").tabs('add',{
+												title: treeNode.name,
+												closable:true,
+												content:'<iframe style="width:100%; height:100%" src="'+treeNode.page+'"></iframe>'
+											});
+										}
+									}
+								}
+							}
+						};
+						$.post('json/menu.json',{},function(data){
+							$.fn.zTree.init($("#tr"), setting, data);
+						},'json');
+					});
+				</script>
+				
+			</div>
 			<div data-options="iconCls:'icon-edit'" title="面板3">系统配置3</div>
 			<div data-options="iconCls:'icon-save'" title="面板4">系统配置4</div>
 		</div> 
 	</div>
 	<div data-options="region:'center'">
-		<div class="easyui-tabs" data-options="fit:true">
+		<div id="tt" class="easyui-tabs" data-options="fit:true">
 			<div data-options="iconCls:'icon-add'" title="面板1">系统配置1</div>
 			<div data-options="iconCls:'icon-remove', closable:true" title="面板2">系统配置2</div>
-			<div data-options="iconCls:'icon-edit'" title="面板3">系统配置3</div>
-			<div data-options="iconCls:'icon-save'" title="面板4">系统配置4</div>
+			<div data-options="iconCls:'icon-edit'" title="面板3">
+				
+			</div>
+			<div data-options="iconCls:'icon-save'" title="面板4">系统配置4<br>
+				
+			</div>
 		</div> 
 	
 	</div>

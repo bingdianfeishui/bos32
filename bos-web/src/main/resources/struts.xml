@@ -6,14 +6,26 @@
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.objectFactory" value="spring" />
 	<!-- 在struts-plugin.xml中已配置 -->
-	<package name="basicStruts2" extends="struts-default">
+	<package name="basicStruts" extends="struts-default">
+		<interceptors>
+			<interceptor name="bosLogin" class="com.itheima.bos.interceptor.BOSLoginInterceptor"></interceptor>
+			<interceptor-stack name="myDefaultStack">
+				<interceptor-ref name="bosLogin">
+					<param name="excludeMethods">login</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>		
+		<global-results>
+			<result name="login" type="redirect">/login.jsp</result>
+		</global-results>
+		
 		<action name="page_*_*">
 			<result type="dispatcher">/WEB-INF/pages/{1}/{2}.jsp</result>
 		</action>
 		<action name="userAction_*" class="userAction" method="{1}">
-			<result name="login">/login.jsp</result>
 			<result name="home" type="redirect">/index.jsp</result>
-			<result name="relogin" type="redirect">/login.jsp</result>
 		</action>
 	</package>
 </struts>
