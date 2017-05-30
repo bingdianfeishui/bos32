@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5Utils {
+    private MD5Utils(){}
 	/**
 	 * 使用md5的算法进行加密
 	 */

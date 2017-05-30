@@ -21,4 +21,8 @@ public class UserServiceImpl implements IUserService {
 		return userDao.findUserByUsernameAndPassword(model.getUsername(), MD5Utils.md5(model.getPassword()));
 	}
 
+    public void updatePassword(User user) {
+        userDao.executeUpdate("user.updatePassword", user.getPassword(), user.getId());
+    }
+
 }

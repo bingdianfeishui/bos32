@@ -2,14 +2,22 @@ package com.itheima.bos.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.itheima.bos.dao.IBaseDao;
+import com.itheima.bos.utils.PageBean;
 
 /**
  * 持久层通用DAO
@@ -51,5 +59,58 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		String hql = "FROM " + entityClass.getSimpleName();
 		return (List<T>) this.getHibernateTemplate().find(hql);
 	}
+
+    public int executeUpdate(String queryName, Object... args) {
+        Session session = this.getSessionFactory().getCurrentSession();
+        Query query = session.getNamedQuery(queryName);
+        int i = 0;
+        for(Object obj :args){
+            query.setParameter(i++, obj);
+        }
+        int ret = query.executeUpdate();
+        //System.out.println(ret);
+        return ret;
+    }
+    
+    public int executeUpdate(String queryName, Map<String, Object> paramsMap) {
+        Session session = this.getSessionFactory().getCurrentSession();
+        Query query = session.getNamedQuery(queryName);
+        if (paramsMap != null) {  
+            Set<String> keySet = paramsMap.keySet();  
+            for (String string : keySet) {  
+                Object obj = paramsMap.get(string);  
+                //这里考虑传入的参数是什么类型，不同类型使用的方法不同  
+                if(obj instanceof Collection<?>){  
+                    query.setParameterList(string, (Collection<?>)obj);  
+                }else if(obj instanceof Object[]){  
+                    query.setParameterList(string, (Object[])obj);  
+                }else{  
+                    query.setParameter(string, obj);  
+                }  
+            }  
+        }  
+        int ret = query.executeUpdate();
+        //System.out.println(ret);
+        return ret;
+    }
+	
+    public void pageQuery(PageBean<T> pageBean) {
+        int currentPage = pageBean.getCurrentPage();
+        int pageSize = pageBean.getPageSize();
+        DetachedCriteria criteria = pageBean.getDetachedCriteria();
+        
+        //查询总记录数
+        criteria.setProjection(Projections.rowCount());
+        List<Long> countList = (List<Long>) this.getHibernateTemplate().findByCriteria(criteria);
+        Long count = countList.get(0);
+        
+        pageBean.setTotal(count.intValue());
+        
+        //查询rows
+        criteria.setProjection(null);
+        int firstResult = (currentPage - 1) * pageSize;
+        List<T> rows = (List<T>) this.getHibernateTemplate().findByCriteria(criteria, firstResult, pageSize);
+        pageBean.setRows(rows);
+    }
 
 }

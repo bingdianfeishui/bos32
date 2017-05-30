@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.itheima.bos.domain.User" table="t_user">
-        <id name="id" type="java.lang.String">
-            <column name="id" length="32" />
-            <generator class="assigned" />
-        </id>
-        <property name="username" type="java.lang.String">
-            <column name="username" length="20" not-null="true" />
-        </property>
-        <property name="password" type="java.lang.String">
-            <column name="password" length="32" not-null="true" />
-        </property>
-        <property name="salary" type="java.lang.Double">
-            <column name="salary" precision="22" scale="0" />
-        </property>
-        <property name="birthday" type="java.util.Date">
-            <column name="birthday" length="0" />
-        </property>
-        <property name="gender" type="java.lang.String">
-            <column name="gender" length="10" />
-        </property>
-        <property name="station" type="java.lang.String">
-            <column name="station" length="40" />
-        </property>
-        <property name="telephone" type="java.lang.String">
-            <column name="telephone" length="11" />
-        </property>
-        <property name="remark" type="java.lang.String">
-            <column name="remark" />
-        </property>
-    </class>
+	<class name="com.itheima.bos.domain.User" table="t_user">
+		<id name="id" type="java.lang.String">
+			<column length="32" name="id" />
+			<generator class="uuid" />
+		</id>
+		<property generated="never" lazy="false" name="username"
+			type="java.lang.String">
+			<column length="20" name="username" not-null="true" />
+		</property>
+		<property generated="never" lazy="false" name="password"
+			type="java.lang.String">
+			<column length="32" name="password" not-null="true" />
+		</property>
+		<property generated="never" lazy="false" name="salary"
+			type="java.lang.Double">
+			<column name="salary" precision="22" scale="0" />
+		</property>
+		<property generated="never" lazy="false" name="birthday"
+			type="java.util.Date">
+			<column length="0" name="birthday" />
+		</property>
+		<property generated="never" lazy="false" name="gender"
+			type="java.lang.String">
+			<column length="10" name="gender" />
+		</property>
+		<property generated="never" lazy="false" name="station"
+			type="java.lang.String">
+			<column length="40" name="station" />
+		</property>
+		<property generated="never" lazy="false" name="telephone"
+			type="java.lang.String">
+			<column length="11" name="telephone" />
+		</property>
+		<property generated="never" lazy="false" name="remark"
+			type="java.lang.String">
+			<column name="remark" />
+		</property>
+	</class>
+	<query name="user.updatePassword">
+	   UPDATE User u SET u.password=?0 WHERE u.id=?1
+	</query>
 </hibernate-mapping>

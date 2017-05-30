@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop" 
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context
@@ -43,6 +41,11 @@
 				<value>classpath:com/itheima/bos/domain/*.xml</value>
 			</list>
 		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>com.itheima.bos.domain</value>
+			</list>
+		</property>
 	</bean>
 
 	<!-- 事务管理器 -->
@@ -50,13 +53,13 @@
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
-	
+
 	<!-- 开启事务注解支持 -->
-	<tx:annotation-driven/>
-	
+	<tx:annotation-driven />
+
 	<!-- 开启组件扫描 -->
 	<context:component-scan base-package="com.itheima.bos" />
 	<!-- 开启注解驱动 -->
 	<context:annotation-config />
-	
+
 </beans>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table name="bc_decidedzone" catalog="bos32" class="com.itheima.bos.domain.DecidedZone"></table>
+	<table name="bc_region" catalog="bos32" class="com.itheima.bos.domain.Region"></table>
+	<table name="bc_staff" catalog="bos32" class="com.itheima.bos.domain.Staff"></table>
+	<table name="bc_subarea" catalog="bos32" class="com.itheima.bos.domain.Subarea"></table>
+</hibernate-reverse-engineering>

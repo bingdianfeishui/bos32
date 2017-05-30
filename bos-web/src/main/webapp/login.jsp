@@ -44,6 +44,33 @@ input[type=password] {
 	if(window.self != window.top){
 		window.top.location = window.location;
 	}
+	
+	function login(){
+		//id带有冒号，直接无法选取，需用转义为'\:'，而'\'的转义字符为'\\'，所以需要加双斜线
+		var id = $('#loginform\\:idInput').val();
+		var pwd = $('#loginform\\:pwdInput').val();
+		var code = $('#loginform\\:codeInput').val();
+
+		if(isBlankOrNull(id)){
+			showError("用户名不能为空！");
+			return false;
+		}
+		if(isBlankOrNull(pwd)){
+			showError("密码不能为空！");
+			return false;
+		}
+		if(isBlankOrNull(code)){
+			showError("验证码不能为空！");
+			return false;
+		}
+		$('#loginform').submit();
+	}
+	function showError(msg){
+		$('#info').text(msg);	
+	}
+	function isBlankOrNull(str){
+		return str.replace(/(^s*)|(s*$)/g, "").length == 0;
+	}
 </script>
 </head>
 <body>
@@ -82,7 +109,7 @@ input[type=password] {
 							<img id="loginform:vCode" src="${pageContext.request.contextPath }/validatecode.jsp"
 								onclick="javascript:document.getElementById('loginform:vCode').src='${pageContext.request.contextPath }/validatecode.jsp?'+Math.random();" />
 						</div>
-						<a  onclick="javascript:document.getElementById('loginform').submit();" href="#" id="loginform:j_id19" name="loginform:j_id19">
+						<a  onclick="login();" href="javascript:void(0)" id="loginform:j_id19" name="loginform:j_id19">
 						<span
 							id="loginform:loginBtn" class="btn btn-login"
 							style="margin-top:-36px;">登录</span>
@@ -91,6 +118,7 @@ input[type=password] {
 					<div align="center">
 					<br>
 						<font color="red">
+							<span id='info'></span>
 							<s:actionerror/>
 						</font>
 					</div>

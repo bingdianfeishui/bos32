@@ -80,13 +80,75 @@
 		},3000);
 		/*************/
 		
+		//密码修改窗口
+		/*************/
+		// extend the 'equals' rule    
+		$.extend($.fn.validatebox.defaults.rules, {    
+			equals: {    
+				validator: function(value,param){    
+					return value == $(param[0]).val();    
+				},    
+				message: '{1}'  
+			}    
+		}); 
+		// extend the 'pwd' rule    
+		$.extend($.fn.validatebox.defaults.rules, {    
+			pwd: {    
+				validator: function(value,param){    
+					var rex = /^(?=.{4,10}$)(?![0-9]+$)[0-9a-zA-Z_]+$/;	//4-10位非纯数字的数字、字母、下划线
+					var ret = rex.test(value);
+					if(!ret){
+						$.fn.validatebox.defaults.rules.pwd.message = '密码必须为4-10位非纯数字的数字、字母、下划线组合';
+					}
+					return ret;    
+				},    
+				message: '' 
+			}    
+		});
+		
+		$("#txtNewPass").validatebox({
+			required:'true',
+			//validType:'length[4,6]'
+			validType:'pwd'
+		});
+		$("#txtRePass").validatebox({
+			required:true,
+			validType:[
+			//'length[4,6]',
+			'pwd',
+			'equals["#txtNewPass","两次输入的密码不一致!"]'
+			]
+		});
+		
 		$("#btnCancel").click(function(){
 			$('#editPwdWindow').window('close');
 		});
 		
 		$("#btnEp").click(function(){
-			alert("修改密码");
+			if($("#txtNewPass").validatebox('isValid') 
+			         && $("#txtRePass").validatebox('isValid')){
+				$.ajax({
+					type:'POST',
+					url:'${pageContext.request.contextPath}/userAction_updatePwd',
+					data:'password='+$('#txtNewPass').val(),
+					//dataType:'text',
+					error:function(data){
+						$.messager.alert('修改密码','对不起！<br>服务器忙，请稍后重试！', 'error');
+					},
+					success:function(data){
+						if(data == '1'){
+							$('#editPwdWindow').window('close');
+							$.messager.alert('修改密码','密码修改成功!<br>请下次使用新密码登录！','info');
+						}else{
+						  $.messager.alert('修改密码','对不起！<br>服务器忙，请稍后重试！', 'error');
+						}
+					},
+				});
+			}else{
+			     $.messager.alert('提示','请正确输入新密码！', 'error');
+			}
 		});
+		/*************/
 	});
 
 	function onClick(event, treeId, treeNode, clickFlag) {
@@ -224,18 +286,18 @@
 	
 	<!--修改密码窗口-->
     <div id="editPwdWindow" class="easyui-window" title="修改密码" collapsible="false" minimizable="false" modal="true" closed="true" resizable="false"
-        maximizable="false" icon="icon-save"  style="width: 300px; height: 160px; padding: 5px;
+        maximizable="false" icon="icon-save"  style="width: 320px; height: 170px; padding: 5px;
         background: #fafafa">
         <div class="easyui-layout" fit="true">
             <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
                 <table cellpadding=3>
                     <tr>
                         <td>新密码：</td>
-                        <td><input id="txtNewPass" type="Password" class="txt01" /></td>
+                        <td><input id="txtNewPass" type="Password" class="txt01 easyui-validatebox" /></td>
                     </tr>
                     <tr>
                         <td>确认密码：</td>
-                        <td><input id="txtRePass" type="Password" class="txt01" /></td>
+                        <td><input id="txtRePass" type="Password" class="txt01 easyui-validatebox" /></td>
                     </tr>
                 </table>
             </div>

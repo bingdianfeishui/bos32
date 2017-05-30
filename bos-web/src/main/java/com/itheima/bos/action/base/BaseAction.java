@@ -13,7 +13,13 @@ import com.opensymphony.xwork2.ModelDriven;
 public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 
 	private static final long serialVersionUID = -7766696297964008314L;
-	
+
+    public static final String HOME = "home";
+    public static final String RELOGIN = "relogin";
+    public static final String LIST = "list";
+    
+    
+    
 	protected T model;
 
 	@SuppressWarnings("unchecked")

@@ -10,7 +10,6 @@ import com.itheima.bos.domain.User;
 @Repository
 public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public User findUserByUsernameAndPassword(String username, String password) {
 		String hql = "FROM User u WHERE u.username=? AND u.password=?";
