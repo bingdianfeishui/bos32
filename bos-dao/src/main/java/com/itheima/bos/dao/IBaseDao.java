@@ -20,6 +20,7 @@ public interface IBaseDao<T> {
 	void update(T entity);
 	T findById(Serializable id);
 	List<T> findAll();
+	void saveOrUpdate(T entity);
 	
 	/**
 	 * 通用分页查询

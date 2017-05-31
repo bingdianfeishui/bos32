@@ -64,8 +64,8 @@ public class Region implements java.io.Serializable {
     // Property accessors
     @Id
     @Column(name = "id", unique = true, nullable = false, length = 32)
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @GeneratedValue(generator = "system-uuid")
+//    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+//    @GeneratedValue(generator = "system-uuid")
     public String getId() {
         return this.id;
     }

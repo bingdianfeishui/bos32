@@ -59,7 +59,7 @@ input[type=password] {
 			showError("密码不能为空！");
 			return false;
 		}
-		if(isBlankOrNull(code)){
+		if(false && isBlankOrNull(code)){
 			showError("验证码不能为空！");
 			return false;
 		}

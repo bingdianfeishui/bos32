@@ -60,6 +60,10 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return (List<T>) this.getHibernateTemplate().find(hql);
 	}
 
+    public void saveOrUpdate(T entity) {
+        this.getHibernateTemplate().saveOrUpdate(entity);
+    }
+	
     public int executeUpdate(String queryName, Object... args) {
         Session session = this.getSessionFactory().getCurrentSession();
         Query query = session.getNamedQuery(queryName);

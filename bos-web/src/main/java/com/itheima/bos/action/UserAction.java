@@ -31,7 +31,8 @@ public class UserAction extends BaseAction<User> {
 
 	public String login() {
 		String validateCode = (String) getSession().getAttribute("key");
-		if (StringUtils.isNotBlank(validateCode) && validateCode.equals(checkcode)) {
+		//TODO:屏蔽验证码功能
+		if (true || StringUtils.isNotBlank(validateCode) && validateCode.equals(checkcode)) {
 			User user = userService.login(model);
 			if(user != null){
 				getSession().setAttribute("loginUser", user);

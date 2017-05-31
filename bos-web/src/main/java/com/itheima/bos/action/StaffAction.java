@@ -11,8 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Scope;
@@ -31,7 +29,6 @@ import com.itheima.bos.utils.PageBean;
 @Scope("prototype")
 @Namespace("/staff")
 @ParentPackage("basicStruts")
-@Results({ @Result(name = "list", location = "/WEB-INF/pages/base/staff.jsp") })
 public class StaffAction extends BaseAction<Staff> {
 
     /**

@@ -1,12 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.itheima</groupId>
-  <artifactId>bos-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <description>parent父工程</description>
-  
-  	<properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.itheima</groupId>
+	<artifactId>bos-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<description>parent父工程</description>
+
+	<properties>
 		<spring.version>4.2.4.RELEASE</spring.version>
 		<hibernate.version>5.0.7.Final</hibernate.version>
 		<struts2.version>2.3.24</struts2.version>
@@ -14,7 +15,7 @@
 		<log4j.version>1.2.12</log4j.version>
 		<shiro.version>1.2.3</shiro.version>
 	</properties>
- 
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -111,12 +112,18 @@
 		</dependency>
 		<!-- log end -->
 
+        <!-- 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.11</version>
 		</dependency>
-
+		 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.11</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
@@ -154,13 +161,13 @@
 			<artifactId>pinyin4j</artifactId>
 			<version>2.5.0</version>
 		</dependency>
-		
+
 		<!-- 引入json-lib的依赖 -->
 		<dependency>
-		    <groupId>net.sf.json-lib</groupId>
-		    <artifactId>json-lib</artifactId>
-		    <version>2.4</version>
-		    <classifier>jdk15</classifier>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
 		</dependency>
 		<!-- jackson-databind -->
 		<dependency>
@@ -174,14 +181,14 @@
 			<artifactId>gson</artifactId>
 			<version>2.6.2</version>
 		</dependency>
-		
+
 		<!-- 引入c3p0jar包 -->
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>0.9.1.2</version>
 		</dependency>
-		
+
 		<!-- 引入ehcache的依赖 -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
@@ -231,23 +238,23 @@
 			</plugin>
 		</plugins>
 		<resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
 	</build>
 	<modules>
 		<module>bos-utils</module>
