@@ -41,7 +41,7 @@ public class StaffService implements IStaffService {
         }
     }
 
-    public void batchDeleteOrRestore(String[] ids, StaffService.Operation op)
+    public void batchDeleteOrRestore(Integer[] ids, StaffService.Operation op)
             throws Exception {
         if (ids.length > 0) {
             Map<String, Object> map = new HashMap<>();
@@ -54,7 +54,7 @@ public class StaffService implements IStaffService {
 
     }
 
-    public Staff findById(String id) {
+    public Staff findById(Integer id) {
         return staffDao.findById(id);
     }
 

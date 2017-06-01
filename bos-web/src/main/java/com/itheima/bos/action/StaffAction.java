@@ -2,6 +2,7 @@ package com.itheima.bos.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -31,164 +32,176 @@ import com.itheima.bos.utils.PageBean;
 @ParentPackage("basicStruts")
 public class StaffAction extends BaseAction<Staff> {
 
-    /**
+	/**
      * 
      */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Resource
-    public IStaffService staffService;
+	@Resource
+	public IStaffService staffService;
 
-    private static final String telRegex = "^1[34578][0-9]{9}$";
+	private static final String telRegex = "^1[34578][0-9]{9}$";
 
-    @Action(value = "add")
-    public String add() throws IOException {
-        List<String> list = validateModel();
+	@Action(value = "add")
+	public String add() throws IOException {
+		List<String> list = validateModel();
 
-        if (list.size() == 0) {
-            try {
-                staffService.save(model);
-            } catch (Exception e) {
-                e.printStackTrace();
-                list.add("服务器忙，请稍后重试！");
-            }
-        }
-        BOSUtils.getResponse().setContentType("text/html;charset=UTF-8");
-        BOSUtils.getResponse().getWriter().print(list.toString());
-        return NONE;
-    }
+		if (list.size() == 0) {
+			try {
+				staffService.save(model);
+			} catch (Exception e) {
+				e.printStackTrace();
+				list.add("服务器忙，请稍后重试！");
+			}
+		}
+		BOSUtils.getResponse().setContentType("text/html;charset=UTF-8");
+		BOSUtils.getResponse().getWriter().print(list.toString());
+		return NONE;
+	}
 
-    private List<String> validateModel() {
-        List<String> list = new ArrayList<>();
-        if (StringUtils.isBlank(model.getName()))
-            list.add("用户名不能为空");
-        if (StringUtils.isBlank(model.getTelephone())
-                || !Pattern.matches(telRegex, model.getTelephone()))
-            list.add("手机号码输入不正确");
-        if (StringUtils.isBlank(model.getStation()))
-            list.add("单位不能为空");
-        if (StringUtils.isBlank(model.getStandard()))
-            list.add("取派标准不能为空");
-        return list;
-    }
+	private List<String> validateModel() {
+		List<String> list = new ArrayList<>();
+		if (StringUtils.isBlank(model.getName()))
+			list.add("用户名不能为空");
+		if (StringUtils.isBlank(model.getTelephone())
+				|| !Pattern.matches(telRegex, model.getTelephone()))
+			list.add("手机号码输入不正确");
+		if (StringUtils.isBlank(model.getStation()))
+			list.add("单位不能为空");
+		if (StringUtils.isBlank(model.getStandard()))
+			list.add("取派标准不能为空");
+		return list;
+	}
 
-    private Integer page;
-    private Integer rows;
+	private Integer page;
+	private Integer rows;
 
-    public void setPage(Integer page) {
-        this.page = page;
-    }
+	public void setPage(Integer page) {
+		this.page = page;
+	}
 
-    public void setRows(Integer rows) {
-        this.rows = rows;
-    }
+	public void setRows(Integer rows) {
+		this.rows = rows;
+	}
 
-    // 混入类，用于过滤掉Staff中的定区数据，避免冗余字段及递归
-    @JsonIgnoreProperties("decidedZones")
-    abstract class StaffMixIn {
-    }
+	// 混入类，用于过滤掉Staff中的定区数据，避免冗余字段及递归
+	@JsonIgnoreProperties("decidedZones")
+	abstract class StaffMixIn {
+	}
 
-    private boolean searchMode = false;
-    public void setSearchMode(boolean searchMode) {
-        this.searchMode = searchMode;
-    }
+	private boolean searchMode = false;
 
-    // easyui pageBean ajax
-    @Action("pageQuery")
-    public String pageQuery() throws IOException {
-        PageBean<Staff> pageBean = new PageBean<Staff>(Staff.class, page, rows);
-        if(searchMode){
-            DetachedCriteria criteria = pageBean.getDetachedCriteria();
-            //添加查询条件
-            if(StringUtils.isNotBlank(model.getId())){
-                criteria.add(Restrictions.like("id", "%"+model.getId()+"%"));
-            }
-            if(StringUtils.isNotBlank(model.getName())){
-                criteria.add(Restrictions.like("name", "%"+model.getName()+"%"));
-            }
-            if(StringUtils.isNotBlank(model.getTelephone())){
-                criteria.add(Restrictions.like("telephone", "%"+model.getTelephone()+"%"));
-            }
-            if(StringUtils.isNotBlank(model.getStation())){
-                criteria.add(Restrictions.like("station", "%"+model.getStation()+"%"));
-            }
-            if(StringUtils.isNotBlank(model.getStandard())){
-                criteria.add(Restrictions.like("standard", "%"+model.getStandard()+"%"));
-            }
-            if(StringUtils.isNotBlank(model.getHaspda())){
-                criteria.add(Restrictions.eq("haspda", model.getHaspda()));
-            }
-            if(StringUtils.isNotBlank(model.getDeltag())){
-                criteria.add(Restrictions.eq("deltag", model.getDeltag()));
-            }
-        }
-        
-        //查询
-        staffService.pageQuery(pageBean);
-        
-        BOSUtils.getResponse().setContentType("text/json;charset=UTF-8");
-        String json = JackSonUtils.init(pageBean.getClass())
-                .setIncludeProperties("total", "rows")
-                .addMixIn(Staff.class, StaffMixIn.class).SerializeObj(pageBean);
-        // System.out.println(json);
-        BOSUtils.getResponse().getWriter().write(json);
-        return NONE;
-    }
+	public void setSearchMode(boolean searchMode) {
+		this.searchMode = searchMode;
+	}
 
-    private String ids;
+	// easyui pageBean ajax
+	@Action("pageQuery")
+	public String pageQuery() throws IOException {
+		PageBean<Staff> pageBean = new PageBean<Staff>(Staff.class, page, rows);
+		if (searchMode) {
+			DetachedCriteria criteria = pageBean.getDetachedCriteria();
+			// 添加查询条件
+			if (model.getId() != null) {
+				criteria.add(Restrictions.eq("id", model.getId()));
+			}
+			if (StringUtils.isNotBlank(model.getName())) {
+				criteria.add(Restrictions.like("name", "%" + model.getName()
+						+ "%"));
+			}
+			if (StringUtils.isNotBlank(model.getTelephone())) {
+				criteria.add(Restrictions.like("telephone",
+						"%" + model.getTelephone() + "%"));
+			}
+			if (StringUtils.isNotBlank(model.getStation())) {
+				criteria.add(Restrictions.like("station",
+						"%" + model.getStation() + "%"));
+			}
+			if (StringUtils.isNotBlank(model.getStandard())) {
+				criteria.add(Restrictions.like("standard",
+						"%" + model.getStandard() + "%"));
+			}
+			if (StringUtils.isNotBlank(model.getHaspda())) {
+				criteria.add(Restrictions.eq("haspda", model.getHaspda()));
+			}
+			if (StringUtils.isNotBlank(model.getDeltag())) {
+				criteria.add(Restrictions.eq("deltag", model.getDeltag()));
+			}
+		}
 
-    public void setIds(String ids) {
-        this.ids = ids;
-    }
+		// 查询
+		staffService.pageQuery(pageBean);
 
-    @Action("batchDelete")
-    public String batchDelete() throws IOException {
-        batchDeleteOrRestore(ids, StaffService.Operation.DELETE);
-        return NONE;
-    }
+		BOSUtils.getResponse().setContentType("text/json;charset=UTF-8");
+		String json = JackSonUtils.init(pageBean.getClass())
+				.setIncludeProperties("total", "rows")
+				.addMixIn(Staff.class, StaffMixIn.class).SerializeObj(pageBean);
+		// System.out.println(json);
+		BOSUtils.getResponse().getWriter().write(json);
+		return NONE;
+	}
 
-    @Action("batchRestore")
-    public String batchRestore() throws IOException {
-        batchDeleteOrRestore(ids, StaffService.Operation.RESTORE);
-        return NONE;
-    }
+	private String ids;
 
-    private void batchDeleteOrRestore(String ids, StaffService.Operation op)
-            throws IOException {
-        String flag = "0";
-        try {
-            if (StringUtils.isNotBlank(ids)) {
-                String[] idArray = ids.split(",");
-                staffService.batchDeleteOrRestore(idArray, op);
-            }
-            flag = "1";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        BOSUtils.getResponse().getWriter().write(flag);
-    }
+	public void setIds(String ids) {
+		this.ids = ids;
+	}
 
-    @Action("edit")
-    public String edit() throws IOException {
-        List<String> list = validateModel();
+	@Action("batchDelete")
+	public String batchDelete() throws IOException {
+		batchDeleteOrRestore(ids, StaffService.Operation.DELETE);
+		return NONE;
+	}
 
-        if (list.size() == 0) {
-            try {
-                Staff staff = staffService.findById(model.getId());
-                // 更新数据
-                staff.setName(model.getName());
-                staff.setTelephone(model.getTelephone());
-                staff.setStation(model.getStation());
-                staff.setStandard(model.getStandard());
-                staff.setHaspda(model.getHaspda());
-                staffService.update(staff);
-            } catch (Exception e) {
-                e.printStackTrace();
-                list.add("服务器忙，请稍后重试！");
-            }
-        }
-        BOSUtils.getResponse().setContentType("text/html;charset=UTF-8");
-        BOSUtils.getResponse().getWriter().print(list.toString());
-        return NONE;
-    }
+	@Action("batchRestore")
+	public String batchRestore() throws IOException {
+		batchDeleteOrRestore(ids, StaffService.Operation.RESTORE);
+		return NONE;
+	}
+
+	private void batchDeleteOrRestore(String ids, StaffService.Operation op)
+			throws IOException {
+		String flag = "0";
+		try {
+			if (StringUtils.isNotBlank(ids)) {
+				String[] idArray = ids.split(",");
+				List<Integer> list = new ArrayList<>();
+				for (String str : idArray) {
+					Integer i = Integer.valueOf(str);
+					if (i != null)
+						list.add(i);
+				}
+				staffService.batchDeleteOrRestore(
+						list.toArray(new Integer[list.size()]), op);
+			}
+			flag = "1";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		BOSUtils.getResponse().getWriter().write(flag);
+	}
+
+	@Action("edit")
+	public String edit() throws IOException {
+		List<String> list = validateModel();
+
+		if (list.size() == 0) {
+			try {
+				Staff staff = staffService.findById(model.getId());
+				// 更新数据
+				staff.setName(model.getName());
+				staff.setTelephone(model.getTelephone());
+				staff.setStation(model.getStation());
+				staff.setStandard(model.getStandard());
+				staff.setHaspda(model.getHaspda());
+				staffService.update(staff);
+			} catch (Exception e) {
+				e.printStackTrace();
+				list.add("服务器忙，请稍后重试！");
+			}
+		}
+		BOSUtils.getResponse().setContentType("text/html;charset=UTF-8");
+		BOSUtils.getResponse().getWriter().print(list.toString());
+		return NONE;
+	}
 }

@@ -8,11 +8,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Region entity. @author MyEclipse Persistence Tools
@@ -20,121 +19,120 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "bc_region")
 public class Region implements java.io.Serializable {
-
-    // Fields
-
     /**
      * 
      */
-    private static final long serialVersionUID = -1817227822737113293L;
-    private String id;
-    private String province;
-    private String city;
-    private String district;
-    private String postcode;
-    private String shortcode;
-    private String citycode;
-    private Set<Subarea> subareas = new HashSet<Subarea>(0);
+    private static final long serialVersionUID = 1L;
+    
+	// Fields
 
-    // Constructors
+	private Integer id;
+	private String province;
+	private String city;
+	private String district;
+	private String postcode;
+	private String shortcode;
+	private String citycode;
+	private Set<Subarea> subareas = new HashSet<Subarea>(0);
 
-    /** default constructor */
-    public Region() {
-    }
+	// Constructors
 
-    /** minimal constructor */
-    public Region(String id) {
-        this.id = id;
-    }
+	/** default constructor */
+	public Region() {
+	}
 
-    /** full constructor */
-    public Region(String id, String province, String city, String district,
-            String postcode, String shortcode, String citycode,
-            Set<Subarea> subareas) {
-        this.id = id;
-        this.province = province;
-        this.city = city;
-        this.district = district;
-        this.postcode = postcode;
-        this.shortcode = shortcode;
-        this.citycode = citycode;
-        this.subareas = subareas;
-    }
+	/** minimal constructor */
+	public Region(Integer id) {
+		this.id = id;
+	}
 
-    // Property accessors
-    @Id
-    @Column(name = "id", unique = true, nullable = false, length = 32)
-//    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-//    @GeneratedValue(generator = "system-uuid")
-    public String getId() {
-        return this.id;
-    }
+	/** full constructor */
+	public Region(Integer id, String province, String city, String district,
+			String postcode, String shortcode, String citycode,
+			Set<Subarea> subareas) {
+		this.id = id;
+		this.province = province;
+		this.city = city;
+		this.district = district;
+		this.postcode = postcode;
+		this.shortcode = shortcode;
+		this.citycode = citycode;
+		this.subareas = subareas;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	// Property accessors
+	@Id
+	@Column(name = "id", unique = true, nullable = false)
+	//@GeneratedValue(strategy=GenerationType.AUTO)
+	public Integer getId() {
+		return this.id;
+	}
 
-    @Column(name = "province", length = 50)
-    public String getProvince() {
-        return this.province;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setProvince(String province) {
-        this.province = province;
-    }
+	@Column(name = "province", length = 50)
+	public String getProvince() {
+		return this.province;
+	}
 
-    @Column(name = "city", length = 50)
-    public String getCity() {
-        return this.city;
-    }
+	public void setProvince(String province) {
+		this.province = province;
+	}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	@Column(name = "city", length = 50)
+	public String getCity() {
+		return this.city;
+	}
 
-    @Column(name = "district", length = 50)
-    public String getDistrict() {
-        return this.district;
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
+	@Column(name = "district", length = 50)
+	public String getDistrict() {
+		return this.district;
+	}
 
-    @Column(name = "postcode", length = 50)
-    public String getPostcode() {
-        return this.postcode;
-    }
+	public void setDistrict(String district) {
+		this.district = district;
+	}
 
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
+	@Column(name = "postcode", length = 50)
+	public String getPostcode() {
+		return this.postcode;
+	}
 
-    @Column(name = "shortcode", length = 30)
-    public String getShortcode() {
-        return this.shortcode;
-    }
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
 
-    public void setShortcode(String shortcode) {
-        this.shortcode = shortcode;
-    }
+	@Column(name = "shortcode", length = 30)
+	public String getShortcode() {
+		return this.shortcode;
+	}
 
-    @Column(name = "citycode", length = 30)
-    public String getCitycode() {
-        return this.citycode;
-    }
+	public void setShortcode(String shortcode) {
+		this.shortcode = shortcode;
+	}
 
-    public void setCitycode(String citycode) {
-        this.citycode = citycode;
-    }
+	@Column(name = "citycode", length = 30)
+	public String getCitycode() {
+		return this.citycode;
+	}
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "region")
-    public Set<Subarea> getSubareas() {
-        return this.subareas;
-    }
+	public void setCitycode(String citycode) {
+		this.citycode = citycode;
+	}
 
-    public void setSubareas(Set<Subarea> subareas) {
-        this.subareas = subareas;
-    }
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "region")
+	public Set<Subarea> getSubareas() {
+		return this.subareas;
+	}
+
+	public void setSubareas(Set<Subarea> subareas) {
+		this.subareas = subareas;
+	}
 
 }

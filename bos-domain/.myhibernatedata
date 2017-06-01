@@ -1,5 +1,5 @@
 #MyEclipse Hibernate Properties
-#Sun May 28 00:54:49 CST 2017
+#Thu Jun 01 20:05:22 CST 2017
 genBasicCompId=true
 sessionFactoryName=com.itheima.bos.domain.HibernateSessionFactory
 profile=
@@ -14,7 +14,7 @@ keyGenerator=
 genVersionTag=false
 sessionFactoryId=sessionFactory
 basePersistenceClass=
-genAnnotations=false
+genAnnotations=true
 reSettingsFile=/bos-domain/hibernate.reveng.xml
 configFile=/bos-domain/<No configs found>
 createConfigFile=true

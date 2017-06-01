@@ -17,9 +17,9 @@ public interface IStaffService {
      * @param op    {@link StaffService.Operation}操作
      * @throws Exception 
      */
-    void batchDeleteOrRestore(String[] ids, StaffService.Operation op) throws Exception;
+    void batchDeleteOrRestore(Integer[] ids, StaffService.Operation op) throws Exception;
 
-    Staff findById(String id);
+    Staff findById(Integer id);
 
     void update(Staff staff);
 
