@@ -29,19 +29,11 @@
 <script
 	src="${pageContext.request.contextPath }/js/jquery.ocupload-1.1.2.js"
 	type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath }/js/customExt.js"
+	type="text/javascript"></script>
 <script type="text/javascript">
-	function doAdd(){
-		$('#addRegionWindow').window("open");
-	}
-	
-	function doView(){
-		alert("修改...");
-	}
-	
-	function doDelete(){
-		alert("删除...");
-	}
-	
+
 	//工具栏
 	var toolbar = [ {
 		id : 'button-edit',	
@@ -64,23 +56,30 @@
 		iconCls : 'icon-redo'
 	}];
 	// 定义列
-	var columns = [ [ {
+	var columns = [ [ 
+	{
+	   checkbox : true,
+
+	},
+	{
 		field : 'id',
-		checkbox : true,
+		title : '编号',
+		width : 120,
+        align : 'center'
 	},{
 		field : 'province',
 		title : '省',
-		width : 120,
+		width : 200,
 		align : 'center'
 	}, {
 		field : 'city',
 		title : '市',
-		width : 120,
+		width : 200,
 		align : 'center'
 	}, {
 		field : 'district',
 		title : '区',
-		width : 120,
+		width : 200,
 		align : 'center'
 	}, {
 		field : 'postcode',
@@ -113,14 +112,17 @@
 			pageList: [30,50,100],
 			pagination : true,
 			toolbar : toolbar,
-			url : "json/region.json",
+			url : "/region/pageQuery.action",
 			idField : 'id',
 			columns : columns,
-			onDblClickRow : doDblClickRow
+			onDblClickRow : doDblClickRow,
+		    onLoadSuccess : function () {
+		        $(this).datagrid("fixRownumber");
+		    }
 		});
 		
 		// 添加、修改区域窗口
-		$('#addRegionWindow').window({
+		$('#addRegionWindow,#editRegionWindow').window({
 	        title: '添加修改区域',
 	        width: 400,
 	        modal: true,
@@ -131,13 +133,70 @@
 	    });
 		      
         $("#button-import").upload({
-          action : "region/importXls.action",
-          name   : "regionFile"
+          action : "/region/importXls.action",
+          name   : "regionFile",
+          onSubmit: function() {
+          },
+          onComplete:function(data){
+            if(data == '1')
+                $("#grid").datagrid('reload');
+            else
+                $.messager.alert("错误","服务器忙，请稍后重试！","error");
+          }
         });
+        
+        $("#edit").click(function(){
+             var r = $('#editRegionForm').form('validate');
+            //var r = true;
+            if(r){
+                $.ajax({
+                    type:"POST",
+                    url:'region/edit.action',
+                    data:$('#editRegionForm').serialize(),
+                    error:function(){
+                        alertServerError();
+                    },
+                    success:function(response){
+                        if(response != "[]")
+                           $.messager.alert('错误', response, 'error');
+                        else{
+                           $('#editRegionWindow').window("close");
+                           $("#grid").datagrid("reload");
+                           //parent.$('#tabs').tabs('getSelected').panel('refresh');
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        
+        function alertServerError(){
+          $.messager.alert('错误','服务器忙，请稍后重试！','error');
+        }
 	});
 
-	function doDblClickRow(){
-		alert("双击表格数据...");
+    function doAdd(){
+        $('#addRegionWindow').window("open");
+    }
+    
+    function doView(){
+        //alert("查询...");
+        var row = $("#grid").datagrid("getSelections")[0];
+        if(row){
+	        $('#editRegionForm').form('load', row.rowData);
+	        $('#editRegionWindow').window("open");
+        }else{
+            $.messager.alert("","请选择要编辑的行或直接双击该行！","warning");
+        }
+    }
+    
+    function doDelete(){
+        alert("删除...");
+    }
+
+	function doDblClickRow(rowIndex, rowData){
+ 		$('#editRegionForm').form('load', rowData);
+		$('#editRegionWindow').window("open");
 	}
 </script>	
 </head>
@@ -145,7 +204,7 @@
 	<div region="center" border="false">
     	<table id="grid"></table>
 	</div>
-	<div class="easyui-window" title="区域添加修改" id="addRegionWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
+	<div class="easyui-window" title="区域添加" id="addRegionWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 		<div region="north" style="height:31px;overflow:hidden;" split="false" border="false" >
 			<div class="datagrid-toolbar">
 				<a id="save" icon="icon-save" href="#" class="easyui-linkbutton" plain="true" >保存</a>
@@ -153,7 +212,49 @@
 		</div>
 		
 		<div region="center" style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="addRegionForm">
+				<table class="table-edit" width="80%" align="center">
+					<tr class="title">
+						<td colspan="2">区域信息</td>
+					</tr>
+					<tr>
+						<td>省</td>
+						<td><input type="text" name="province" class="easyui-validatebox" required="true"/></td>
+					</tr>
+					<tr>
+						<td>市</td>
+						<td><input type="text" name="city" class="easyui-validatebox" required="true"/></td>
+					</tr>
+					<tr>
+						<td>区</td>
+						<td><input type="text" name="district" class="easyui-validatebox" required="true"/></td>
+					</tr>
+					<tr>
+						<td>邮编</td>
+						<td><input type="text" name="postcode" class="easyui-validatebox" required="true"/></td>
+					</tr>
+					<tr>
+						<td>简码</td>
+						<td><input type="text" name="shortcode" class="easyui-validatebox" required="true"/></td>
+					</tr>
+					<tr>
+						<td>城市编码</td>
+						<td><input type="text" name="citycode" class="easyui-validatebox" required="true"/></td>
+					</tr>
+					</table>
+			</form>
+		</div>
+	</div>
+	<div class="easyui-window" title="区域修改" id="editRegionWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
+		<div region="north" style="height:31px;overflow:hidden;" split="false" border="false" >
+			<div class="datagrid-toolbar">
+				<a id="edit" icon="icon-save" href="#" class="easyui-linkbutton" plain="true" >保存</a>
+			</div>
+		</div>
+		
+		<div region="center" style="overflow:auto;padding:5px;" border="false">
+			<form id="editRegionForm">
+			    <input type="hidden" name="id"/>
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">区域信息</td>

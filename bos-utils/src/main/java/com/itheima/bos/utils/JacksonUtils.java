@@ -11,22 +11,22 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
-public class JackSonUtils {
+public class JacksonUtils {
     @JsonFilter("jackSonUtilsMixInFilter")
     interface JackSonUtilsMixIn{}
     
     private ObjectMapper objectMapper;
     
     private Class<?> target;
-    private JackSonUtils(Class<?> target){
+    private JacksonUtils(Class<?> target){
         this.objectMapper = new ObjectMapper();
         this.target = target;
     }
-    public static JackSonUtils init(Class<?> targetClass){
-        return new JackSonUtils(targetClass);
+    public static JacksonUtils init(Class<?> targetClass){
+        return new JacksonUtils(targetClass);
     }
     
-    public JackSonUtils setFilter(FilterProvider filterProvider){
+    public JacksonUtils setFilter(FilterProvider filterProvider){
         objectMapper.setFilterProvider(filterProvider);
         return this;
     }
@@ -36,7 +36,7 @@ public class JackSonUtils {
      * @param mixinSource 混入注解类
      * @return
      */
-    public JackSonUtils addMixIn(Class<?> mixinSource){
+    public JacksonUtils addMixIn(Class<?> mixinSource){
         objectMapper.addMixIn(this.target, mixinSource);
         return this;
     }
@@ -47,7 +47,7 @@ public class JackSonUtils {
      * @param mixinSource 混入注解类
      * @return
      */
-    public JackSonUtils addMixIn(Class<?> pojo, Class<?> mixinSource){
+    public JacksonUtils addMixIn(Class<?> pojo, Class<?> mixinSource){
         objectMapper.addMixIn(pojo, mixinSource);
         return this;
     }
@@ -59,7 +59,7 @@ public class JackSonUtils {
      * @param excepts
      * @return
      */
-    public JackSonUtils setExceptProperties(String... excepts){
+    public JacksonUtils setExceptProperties(String... excepts){
         FilterProvider filter = new SimpleFilterProvider().addFilter(
                 "jackSonUtilsMixInFilter",
                 SimpleBeanPropertyFilter.serializeAllExcept(excepts));
@@ -74,7 +74,7 @@ public class JackSonUtils {
      * @param includes
      * @return
      */
-    public JackSonUtils setIncludeProperties(String... includes){
+    public JacksonUtils setIncludeProperties(String... includes){
         FilterProvider filter = new SimpleFilterProvider().addFilter(
                 "jackSonUtilsMixInFilter",
                 SimpleBeanPropertyFilter.filterOutAllExcept(includes));
@@ -83,21 +83,21 @@ public class JackSonUtils {
     }
 
     public String SerializeObj(Object obj) throws JsonProcessingException{
-        checkTargetClass(obj);
         return objectMapper.writeValueAsString(obj);
     }
     public void SerializeObj(OutputStream out,Object obj) throws IOException{
-        checkTargetClass(obj);
         objectMapper.writeValue(out, obj);
     }
     public void SerializeObj(Writer out,Object obj) throws IOException{
-        checkTargetClass(obj);
         objectMapper.writeValue(out, obj);
     }
     
-    private void checkTargetClass(Object obj){
-        if(obj.getClass() != this.target){
-            throw new IllegalArgumentException("JackSonUtils is inited as "+target.getName() + ", but argument type is "+obj.getClass().getName());
-        }
-    }
+//    private void checkTargetClass(Object obj){
+//        Class<?> argClass = null;
+//        if(obj instanceof Collection)
+//        
+//        if(argClass != this.target){
+//            throw new IllegalArgumentException("JackSonUtils is inited as "+target.getName() + ", but argument type is "+obj.getClass().getName());
+//        }
+//    }
 }

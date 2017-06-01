@@ -34,7 +34,7 @@ CREATE TABLE bc_region
    district             VARCHAR(50),
    postcode             VARCHAR(50),
    shortcode            VARCHAR(50),
-   citycode             VARCHAR(255),
+   citycode             VARCHAR(50),
    PRIMARY KEY (id)
 );
 

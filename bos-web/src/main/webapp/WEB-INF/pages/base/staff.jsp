@@ -26,7 +26,7 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath }/js/serializeForm2Json.js"></script>
+	src="${pageContext.request.contextPath }/js/customExt.js"></script>
 <script type="text/javascript">
 	function doAdd(){
 		$('#addStaffWindow').window("open");
@@ -150,7 +150,7 @@
 	{
 		field : 'id',
 		title : '员工编号',
-        width : 300,
+        width : 120,
         align : 'left'
 	},{
 		field : 'name',

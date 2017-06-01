@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,10 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.itheima.bos.action.base.BaseAction;
 import com.itheima.bos.domain.Region;
 import com.itheima.bos.service.IRegionService;
 import com.itheima.bos.utils.BOSUtils;
+import com.itheima.bos.utils.JacksonUtils;
 import com.itheima.bos.utils.PinYin4jUtils;
 
 @Controller
@@ -50,6 +51,7 @@ public class RegionAction extends BaseAction<Region> {
 			add("区");
 			add("县");
 			add("乡");
+			add("旗");
 		}
 	};
 	private File regionFile;
@@ -140,5 +142,71 @@ public class RegionAction extends BaseAction<Region> {
 		region.setShortcode(shortcode);
 		region.setCitycode(citycode);
 	}
+    
+    @JsonIgnoreProperties("subareas")
+    interface RegionMixIn{}
+	@Action("pageQuery")
+	public String pageQuery() throws IOException{
+	    if(searchMode){
+	        
+	    }
+	    
+	    regionService.pageQuery(pageBean);
+	    BOSUtils.getResponse().setContentType("text/json;charset=UTF-8");
+	    String json = JacksonUtils.init(pageBean.getClass()).setIncludeProperties("total", "rows").SerializeObj(pageBean);
+	    //System.out.println(json);
+	    BOSUtils.getResponse().getWriter().write(json);
+	    return NONE;
+	}
+	
+	@Action("edit")
+	public String edit() throws IOException{
+	       List<String> list = validateModel();
 
+	        if (list.size() == 0) {
+	            try {
+	                Region region = regionService.findById(model.getId());
+	                // 更新数据
+	                region.setProvince(model.getProvince());
+	                region.setCity(model.getCity());
+	                region.setDistrict(model.getDistrict());
+	                region.setPostcode(model.getPostcode());
+	                region.setShortcode(model.getShortcode());
+	                region.setCitycode(model.getCitycode());
+	                regionService.update(region);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                list.add("服务器忙，请稍后重试！");
+	            }
+	        }
+	        BOSUtils.getResponse().setContentType("text/html;charset=UTF-8");
+	        BOSUtils.getResponse().getWriter().print(list.toString());
+	    
+	    
+	    return NONE;
+	}
+	
+	private List<String> validateModel() {
+        List<String> list = new ArrayList<>();
+        if (StringUtils.isBlank(model.getProvince()))
+            list.add("省份不能为空");
+        if (StringUtils.isBlank(model.getCity()))
+            list.add("城市不能为空");
+        if (StringUtils.isBlank(model.getDistrict()))
+            list.add("区域不能为空");
+        if (StringUtils.isBlank(model.getPostcode()))
+            list.add("邮政编码不能为空");
+        if (StringUtils.isBlank(model.getCitycode()))
+            list.add("城市编码不能为空");
+        if (StringUtils.isBlank(model.getShortcode()))
+            list.add("简码不能为空");
+        
+        return list;
+    }
+	
+	@Action("listAjax")
+	public String listAjax(){
+	    
+	    return NONE;
+	}
 }

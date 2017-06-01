@@ -2,7 +2,6 @@ package com.itheima.bos.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -23,8 +22,7 @@ import com.itheima.bos.domain.Staff;
 import com.itheima.bos.service.IStaffService;
 import com.itheima.bos.service.impl.StaffService;
 import com.itheima.bos.utils.BOSUtils;
-import com.itheima.bos.utils.JackSonUtils;
-import com.itheima.bos.utils.PageBean;
+import com.itheima.bos.utils.JacksonUtils;
 
 @Controller
 @Scope("prototype")
@@ -73,32 +71,15 @@ public class StaffAction extends BaseAction<Staff> {
 		return list;
 	}
 
-	private Integer page;
-	private Integer rows;
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public void setRows(Integer rows) {
-		this.rows = rows;
-	}
-
 	// 混入类，用于过滤掉Staff中的定区数据，避免冗余字段及递归
 	@JsonIgnoreProperties("decidedZones")
 	abstract class StaffMixIn {
 	}
 
-	private boolean searchMode = false;
-
-	public void setSearchMode(boolean searchMode) {
-		this.searchMode = searchMode;
-	}
-
 	// easyui pageBean ajax
 	@Action("pageQuery")
 	public String pageQuery() throws IOException {
-		PageBean<Staff> pageBean = new PageBean<Staff>(Staff.class, page, rows);
+		
 		if (searchMode) {
 			DetachedCriteria criteria = pageBean.getDetachedCriteria();
 			// 添加查询条件
@@ -133,7 +114,7 @@ public class StaffAction extends BaseAction<Staff> {
 		staffService.pageQuery(pageBean);
 
 		BOSUtils.getResponse().setContentType("text/json;charset=UTF-8");
-		String json = JackSonUtils.init(pageBean.getClass())
+		String json = JacksonUtils.init(pageBean.getClass())
 				.setIncludeProperties("total", "rows")
 				.addMixIn(Staff.class, StaffMixIn.class).SerializeObj(pageBean);
 		// System.out.println(json);
