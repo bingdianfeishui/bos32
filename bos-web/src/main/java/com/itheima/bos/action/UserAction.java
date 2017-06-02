@@ -64,6 +64,7 @@ public class UserAction extends BaseAction<User> {
 			    userService.updatePassword(user);
                 ret = "1";
             } catch (Exception e) {
+            	e.printStackTrace();
             }
 		}
 		BOSUtils.getResponse().getWriter().print(ret);

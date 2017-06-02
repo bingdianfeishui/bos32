@@ -33,28 +33,9 @@
 	src="${pageContext.request.contextPath }/js/customExt.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
-
+ 
 	//工具栏
-	var toolbar = [ {
-		id : 'button-edit',	
-		text : '修改',
-		iconCls : 'icon-edit',
-		handler : doView
-	}, {
-		id : 'button-add',
-		text : '增加',
-		iconCls : 'icon-add',
-		handler : doAdd
-	}, {
-		id : 'button-delete',
-		text : '删除',
-		iconCls : 'icon-cancel',
-		handler : doDelete
-	}, {
-		id : 'button-import',
-		text : '导入',
-		iconCls : 'icon-redo'
-	}];
+	var toolbar = "#tb";
 	// 定义列
 	var columns = [ [ 
 	{
@@ -64,22 +45,22 @@
 	{
 		field : 'id',
 		title : '编号',
-		width : 120,
+		width : 100,
         align : 'center'
 	},{
 		field : 'province',
 		title : '省',
-		width : 200,
+		width : 160,
 		align : 'center'
 	}, {
 		field : 'city',
 		title : '市',
-		width : 200,
+		width : 160,
 		align : 'center'
 	}, {
 		field : 'district',
 		title : '区',
-		width : 200,
+		width : 160,
 		align : 'center'
 	}, {
 		field : 'postcode',
@@ -94,7 +75,7 @@
 	}, {
 		field : 'citycode',
 		title : '城市编码',
-		width : 200,
+		width : 160,
 		align : 'center'
 	} ] ];
 	
@@ -136,8 +117,10 @@
           action : "/region/importXls.action",
           name   : "regionFile",
           onSubmit: function() {
+          	MaskUtil.waiting("上传完毕。正在处理，请稍后。。。");
           },
           onComplete:function(data){
+            MaskUtil.close();
             if(data == '1')
                 $("#grid").datagrid('reload');
             else
@@ -173,29 +156,50 @@
         function alertServerError(){
           $.messager.alert('错误','服务器忙，请稍后重试！','error');
         }
+        
+        $("#keyword").keydown(function(event){
+        	//alert(event.keyCode);
+        	if(event.which == 13)
+        		doSearch($("#keyword")[0]);
+        });
+        
+	
 	});
-
     function doAdd(){
-        $('#addRegionWindow').window("open");
-    }
-    
-    function doView(){
-        //alert("查询...");
-        var row = $("#grid").datagrid("getSelections")[0];
-        if(row){
-	        $('#editRegionForm').form('load', row.rowData);
-	        $('#editRegionWindow').window("open");
-        }else{
-            $.messager.alert("","请选择要编辑的行或直接双击该行！","warning");
-        }
-    }
-    
-    function doDelete(){
-        alert("删除...");
-    }
-
+      	$('#addRegionWindow').window("open");
+  	}
+  
+	function doView(){
+	    //alert("查询...");
+	    var row = $("#grid").datagrid("getSelections")[0];
+	    if(row){
+	     $('#editRegionForm').form('load', row.rowData);
+	     $('#editRegionWindow').window("open");
+	    }else{
+	        $.messager.alert("警告","请选择要编辑的行或直接双击该行！","warning");
+	    }
+	}
+	
+	function doDelete(){
+	    alert("删除...");
+	}
+	
+	function doSearch(txt){
+		var val = $.trim(txt.value);
+		if(val != ''){
+			var json = {
+				searchMode : true,
+				keyword : val
+			};
+	        
+	        $("#grid").datagrid('load', 
+	            json
+	        );
+		}
+	}
+	
 	function doDblClickRow(rowIndex, rowData){
- 		$('#editRegionForm').form('load', rowData);
+			$('#editRegionForm').form('load', rowData);
 		$('#editRegionWindow').window("open");
 	}
 </script>	
@@ -204,6 +208,21 @@
 	<div region="center" border="false">
     	<table id="grid"></table>
 	</div>
+
+	<div id="tb">
+		<div region="north" border="false" style="border-bottom:1px solid #ddd;height:28px;padding:2px 2px 2px 2px;background:#fafafa;">
+			<div style="float:left"><a href="#" onclick="doView()" id="button-edit" class="easyui-linkbutton" plain="true" icon="icon-edit">修改</a></div>
+			<div style="float:left"><a href="#" onclick="doAdd()" id="button-add" class="easyui-linkbutton" plain="true" icon="icon-add">增加</a></div>
+			<div style="float:left"><a href="#" onclick="doDelete()" id="button-delete" class="easyui-linkbutton" plain="true" icon="icon-cancel">删除</a></div>
+			<div style="float:left"><a href="#"  id="button-import" class="easyui-linkbutton" plain="true" icon="icon-redo">导入</a></div>
+			<div class="datagrid-btn-separator"></div>
+			<div style="float:right;">
+				<input id="keyword" class="easyui-textbox" placeholder="省市区、邮编、简码或城市编码" style="line-height:20px;margin-top:5px;border:1px solid #ccc">
+				<a href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-search'"  onclick="doSearch($('#keyword')[0])"></a>
+			</div>
+		</div>
+	</div>
+	
 	<div class="easyui-window" title="区域添加" id="addRegionWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 		<div region="north" style="height:31px;overflow:hidden;" split="false" border="false" >
 			<div class="datagrid-toolbar">

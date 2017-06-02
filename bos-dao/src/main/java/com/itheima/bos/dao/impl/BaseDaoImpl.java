@@ -69,7 +69,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
         Query query = session.getNamedQuery(queryName);
         int i = 0;
         for(Object obj :args){
-            query.setParameter(i++, obj);
+            query.setParameter(String.valueOf(i++), obj);
         }
         int ret = query.executeUpdate();
         //System.out.println(ret);

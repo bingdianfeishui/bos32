@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -15,6 +16,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -39,6 +42,8 @@ public class RegionAction extends BaseAction<Region> {
      */
 	private static final long serialVersionUID = 1L;
 
+	private static final String RegexOfChiniseAndLetter = "^[A-Za-z0-9\u4e00-\u9fa5]*$";
+	
 	@Autowired
 	private IRegionService regionService;
 
@@ -142,14 +147,17 @@ public class RegionAction extends BaseAction<Region> {
 		region.setShortcode(shortcode);
 		region.setCitycode(citycode);
 	}
-    
+	
+	private String keyword;
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
     @JsonIgnoreProperties("subareas")
     interface RegionMixIn{}
 	@Action("pageQuery")
 	public String pageQuery() throws IOException{
-	    if(searchMode){
-	        
-	    }
+		if(searchMode)
+			generateSearchRestrictions();
 	    
 	    regionService.pageQuery(pageBean);
 	    BOSUtils.getResponse().setContentType("text/json;charset=UTF-8");
@@ -157,6 +165,21 @@ public class RegionAction extends BaseAction<Region> {
 	    //System.out.println(json);
 	    BOSUtils.getResponse().getWriter().write(json);
 	    return NONE;
+	}
+	
+	private void generateSearchRestrictions() {
+		keyword = keyword.trim();
+		if(!Pattern.matches(RegexOfChiniseAndLetter, keyword)) return;
+		
+		Disjunction dis=Restrictions.disjunction();
+		dis.add(Restrictions.like("province", "%"+keyword+"%"));
+		dis.add(Restrictions.like("city", "%"+keyword+"%"));
+		dis.add(Restrictions.like("district", "%"+keyword+"%"));
+		dis.add(Restrictions.like("postcode", "%"+keyword+"%"));
+		dis.add(Restrictions.like("shortcode", "%"+keyword+"%"));
+		dis.add(Restrictions.like("citycode", "%"+keyword+"%"));
+		pageBean.getDetachedCriteria().add(dis);
+		
 	}
 	
 	@Action("edit")
@@ -207,6 +230,14 @@ public class RegionAction extends BaseAction<Region> {
 	@Action("listAjax")
 	public String listAjax(){
 	    
+	    return NONE;
+	}
+	
+	@Action("quickSearch")
+	public String quickSearch(){
+		if(searchMode)
+			generateSearchRestrictions();
+		
 	    return NONE;
 	}
 }
