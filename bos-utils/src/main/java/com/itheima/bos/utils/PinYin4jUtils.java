@@ -114,7 +114,8 @@ public class PinYin4jUtils {
 	 * @param separator
 	 * @return
 	 */
-	public static String hanziToPinyin(String hanzi, String separator) {
+	@SuppressWarnings("deprecation")
+    public static String hanziToPinyin(String hanzi, String separator) {
 
 		// 创建汉语拼音处理类
 		HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
@@ -127,7 +128,6 @@ public class PinYin4jUtils {
 			pinyingStr = PinyinHelper.toHanyuPinyinString(hanzi, defaultFormat,
 					separator);
 		} catch (BadHanyuPinyinOutputFormatCombination e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return pinyingStr;

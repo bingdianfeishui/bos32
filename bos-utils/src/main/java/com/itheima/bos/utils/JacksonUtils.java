@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,14 +84,18 @@ public class JacksonUtils {
         return this;
     }
 
-    public String SerializeObj(Object obj) throws JsonProcessingException{
+    public String serializeObj(Object obj) throws JsonProcessingException{
         return objectMapper.writeValueAsString(obj);
     }
-    public void SerializeObj(OutputStream out,Object obj) throws IOException{
+    public void serializeObj(OutputStream out,Object obj) throws IOException{
         objectMapper.writeValue(out, obj);
     }
-    public void SerializeObj(Writer out,Object obj) throws IOException{
+    public void serializeObj(Writer out,Object obj) throws IOException{
         objectMapper.writeValue(out, obj);
+    }
+    public void serializeObj(HttpServletResponse response, Object obj) throws IOException {
+        response.setContentType("text/json;charset='utf-8'");
+        serializeObj(response.getWriter(), obj);
     }
     
 //    private void checkTargetClass(Object obj){

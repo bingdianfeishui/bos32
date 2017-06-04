@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import com.itheima.bos.utils.PageBean;
 
 /**
@@ -23,7 +25,7 @@ public interface IBaseDao<T> {
 	void saveOrUpdate(T entity);
 	
 	/**
-	 * 通用分页查询
+	 * 通用条件分页查询
 	 * @param pageBean<T> 泛型分页实体类
 	 */
 	void pageQuery(PageBean<T> pageBean);
@@ -43,4 +45,12 @@ public interface IBaseDao<T> {
      * @return 受影响的记录数
      */
     int executeUpdate(String queryName, Map<String, Object> paramsMap);
+    
+    /**
+     * 通用离线条件查询，不分页
+     * 分页请参见{@link #pageQuery(PageBean)}
+     * @param detachedCriteria 离线查询条件
+     * @return
+     */
+    List<T> findListByDetachedCriteria(DetachedCriteria detachedCriteria);
 }

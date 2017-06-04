@@ -76,7 +76,14 @@
 	</div>
 	<div data-options="region:'center'">
 		<div class="easyui-tabs" data-options="fit:true">
-			<div data-options="iconCls:'icon-add'" title="面板1">系统配置1</div>
+			<div data-options="iconCls:'icon-add'" title="面板1">系统配置1
+			 <input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:doSearch" style="width:300px" ></input>
+			 <script type="text/javascript">
+			     function doSearch(aa){
+			         alert(aa);
+			     }
+			 </script>
+			</div>
 			<div data-options="iconCls:'icon-remove', closable:true" title="面板2">系统配置2</div>
 			<div data-options="iconCls:'icon-edit'" title="面板3">系统配置3</div>
 			<div data-options="iconCls:'icon-save', selected:true"

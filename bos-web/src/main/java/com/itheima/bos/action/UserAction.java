@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -16,58 +20,120 @@ import com.itheima.bos.utils.MD5Utils;
 
 @Controller
 @Scope("prototype")
+@Namespace("/user")
+@ParentPackage("basicStruts")
 public class UserAction extends BaseAction<User> {
 
-	private static final long serialVersionUID = 8815472318245773723L;
+    private static final long serialVersionUID = 8815472318245773723L;
 
-	private String checkcode;
+    // region actions
+    /**
+     * 登录Action
+     * @return
+     */
+    @Action("login")
+    public String login() {
+        String validateCode = (String) BOSUtils.getSession()
+                .getAttribute("key");
+        // TODO:调试阶段屏蔽验证码功能
+        if (true || StringUtils.isNotBlank(validateCode)
+                && validateCode.equals(checkcode)) {
+            User user = userService.login(model);
+            if (user != null) {
+                BOSUtils.getSession().setAttribute("loginUser", user);
+                return HOME;
+            } else {
+                addActionError("用户名或密码错误！");
+                return LOGIN;
+            }
+        }
 
-	public void setCheckcode(String checkcode) {
-		this.checkcode = checkcode;
-	}
+        addActionError("验证码输入错误！");
+        return LOGIN;
+    }
 
-	@Autowired
-	private IUserService userService;
+    /**
+     * 注销Action
+     * @return
+     */
+    @Action("logout")
+    public String logout() {
+        BOSUtils.getSession().invalidate();
+        return RELOGIN;
+    }
 
-	public String login() {
-		String validateCode = (String) getSession().getAttribute("key");
-		//TODO:屏蔽验证码功能
-		if (true || StringUtils.isNotBlank(validateCode) && validateCode.equals(checkcode)) {
-			User user = userService.login(model);
-			if(user != null){
-				getSession().setAttribute("loginUser", user);
-				return HOME;
-			}
-			else{
-				addActionError("用户名或密码错误！");
-				return LOGIN;
-			}
-		}
-
-		addActionError("验证码输入错误！");
-		return LOGIN;
-	}
-	
-	public String logout(){
-		getSession().invalidate();
-		return RELOGIN;
-	}
-	
-	//密码验证规则正则表达式
-    private final static String passwordRegex="^(?=.{4,10}$)(?![0-9]+$)[0-9a-zA-Z_]+$";
-	public String updatePwd() throws IOException{
-		String ret= "0";
-	    if(StringUtils.isNotBlank(model.getPassword()) && Pattern.matches(passwordRegex, model.getPassword())){
-	        User user = BOSUtils.getLoginUser();
-			user.setPassword(MD5Utils.md5(model.getPassword()));
-			try {
-			    userService.updatePassword(user);
+    /**
+     * 更改密码Action
+     * @return
+     * @throws IOException
+     */
+    @Action("updatePwd")
+    public String updatePwd() throws IOException {
+        String ret = "0";
+        if (StringUtils.isNotBlank(model.getPassword())
+                && Pattern.matches(PASSWORD_REGEX, model.getPassword())) {
+            User user = BOSUtils.getLoginUser();
+            user.setPassword(MD5Utils.md5(model.getPassword()));
+            try {
+                userService.updatePassword(user);
                 ret = "1";
             } catch (Exception e) {
-            	e.printStackTrace();
+                e.printStackTrace();
             }
-		}
-		BOSUtils.getResponse().getWriter().print(ret);
-		return NONE;
-	}
+        }
+        BOSUtils.getResponse().getWriter().print(ret);
+        return NONE;
+    }
+
+//    @Action("pageQuery")
+    @Override
+    public String pageQuery() throws IOException {
+        // TODO Auto-generated method stub
+        return NONE;
+    }
+
+//    @Action("add")
+    @Override
+    public String add() throws IOException {
+        // TODO Auto-generated method stub
+        return NONE;
+    }
+
+//    @Action("delete")
+    @Override
+    public String delete() throws IOException {
+        // TODO Auto-generated method stub
+        return NONE;
+    }
+
+//    @Action("edit")
+    @Override
+    public String edit() throws IOException {
+        // TODO Auto-generated method stub
+        return NONE;
+    }
+
+//    @Action("findByQ")
+    @Override
+    public String findByQ() throws IOException {
+        // TODO Auto-generated method stub
+        return NONE;
+    }
+
+    // endregion actions
+
+    // region private fields methods
+    @Autowired
+    private IUserService userService;
+
+    // 属性驱动，输入的验证码
+    private String checkcode;
+
+    public void setCheckcode(String checkcode) {
+        this.checkcode = checkcode;
+    }
+
+    // 密码验证规则正则表达式
+    private final static String PASSWORD_REGEX = "^(?=.{4,10}$)(?![0-9]+$)[0-9a-zA-Z_]+$";
+    // endregion private fields methods
 }

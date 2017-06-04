@@ -129,7 +129,7 @@
 			         && $("#txtRePass").validatebox('isValid')){
 				$.ajax({
 					type:'POST',
-					url:'${pageContext.request.contextPath}/userAction_updatePwd',
+					url:'${pageContext.request.contextPath}/user/updatePwd',
 					data:'password='+$('#txtNewPass').val(),
 					//dataType:'text',
 					error:function(data){
@@ -204,7 +204,7 @@
 		$.messager
 		.confirm('系统提示','您确定要退出本次登录吗?',function(isConfirm) {
 			if (isConfirm) {
-				location.href = '/userAction_logout.action';
+				location.href = '${pageContext.request.contextPath}/user/logout.action';
 			}
 		});
 	}

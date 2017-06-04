@@ -4,4 +4,5 @@ import com.itheima.bos.domain.Region;
 
 public interface IRegionDao extends IBaseDao<Region>{
 
+
 }
