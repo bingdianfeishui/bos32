@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Region entity. @author MyEclipse Persistence Tools
@@ -33,6 +34,11 @@ public class Region implements java.io.Serializable {
 	private String citycode;
 	private Set<Subarea> subareas = new HashSet<Subarea>(0);
 
+	@Transient
+    public String getName(){
+	    return province +" "+city+" "+district;
+	}
+	
 	// Constructors
 
 	/** default constructor */

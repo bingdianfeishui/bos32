@@ -140,7 +140,7 @@
                         alertServerError();
                     },
                     success:function(response){
-                        if(response != "[]")
+                        if(response != "")
                            $.messager.alert('错误', response, 'error');
                         else{
                            $('#editRegionWindow').window("close");
@@ -153,18 +153,15 @@
             return false;
         });
         
-        function alertServerError(){
-          $.messager.alert('错误','服务器忙，请稍后重试！','error');
-        }
-        
-        $("#keyword").keydown(function(event){
-        	//alert(event.keyCode);
-        	if(event.which == 13)
-        		doSearch($("#keyword")[0]);
+        $("#reset").click(function(){
+            $("#grid").datagrid('load',{});
         });
-        
-	
 	});
+	
+	function alertServerError(){
+	  $.messager.alert('错误','服务器忙，请稍后重试！','error');
+	}
+	
     function doAdd(){
       	$('#addRegionWindow').window("open");
   	}
@@ -173,7 +170,7 @@
 	    //alert("查询...");
 	    var row = $("#grid").datagrid("getSelections")[0];
 	    if(row){
-	     $('#editRegionForm').form('load', row.rowData);
+	     $('#editRegionForm').form('load', row);
 	     $('#editRegionWindow').window("open");
 	    }else{
 	        $.messager.alert("警告","请选择要编辑的行或直接双击该行！","warning");
@@ -185,11 +182,11 @@
 	}
 	
 	function doSearch(txt){
-		var val = $.trim(txt.value);
+		var val = $.trim(txt);
 		if(val != ''){
 			var json = {
 				searchMode : true,
-				keyword : val
+				q : val
 			};
 	        
 	        $("#grid").datagrid('load', 
@@ -199,7 +196,7 @@
 	}
 	
 	function doDblClickRow(rowIndex, rowData){
-			$('#editRegionForm').form('load', rowData);
+		$('#editRegionForm').form('load', rowData);
 		$('#editRegionWindow').window("open");
 	}
 </script>	
@@ -216,10 +213,9 @@
 			<div style="float:left"><a href="#" onclick="doDelete()" id="button-delete" class="easyui-linkbutton" plain="true" icon="icon-cancel">删除</a></div>
 			<div style="float:left"><a href="#"  id="button-import" class="easyui-linkbutton" plain="true" icon="icon-redo">导入</a></div>
 			<div class="datagrid-btn-separator"></div>
-			<div style="float:right;">
-				<input id="keyword" class="easyui-textbox" placeholder="省市区、邮编、简码或城市编码" style="line-height:20px;margin-top:5px;border:1px solid #ccc">
-				<a href="#" class="easyui-linkbutton" plain="true" data-options="iconCls:'icon-search'"  onclick="doSearch($('#keyword')[0])"></a>
-			</div>
+			<div style="float:left;padding:2px 3px 0 3px;"><input id="keyword" class="easyui-searchbox" data-options="prompt:'省、市、区、邮编、简码或城市编码',searcher:doSearch" style="height:25px;width:300px;border:1px solid #ccc" ></input></div>
+			<div class="datagrid-btn-separator"></div>
+		    <div style="float:left;padding:0 3px 0 3px;"><a id="reset" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" plain="true">重置</a></div>
 		</div>
 	</div>
 	

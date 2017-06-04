@@ -25,7 +25,6 @@ import com.itheima.bos.utils.PageBean;
  *
  * @param <T>
  */
-@SuppressWarnings("unchecked")
 public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	Class<T> entityClass = null;
 	
@@ -34,7 +33,8 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		super.setSessionFactory(sessionFactory);
 	}
 	
-	public BaseDaoImpl() {
+	@SuppressWarnings("unchecked")
+    public BaseDaoImpl() {
 		//获取BaseDao的泛型参数
 		entityClass = (Class<T>) ((ParameterizedType)(this.getClass().getGenericSuperclass())).getActualTypeArguments()[0];
 	}
@@ -112,9 +112,14 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
         
         //查询rows
         criteria.setProjection(null);
+        criteria.setResultTransformer(DetachedCriteria.ROOT_ENTITY);
         int firstResult = (currentPage - 1) * pageSize;
         List<T> rows = (List<T>) this.getHibernateTemplate().findByCriteria(criteria, firstResult, pageSize);
         pageBean.setRows(rows);
+    }
+
+    public List<T> findListByDetachedCriteria(DetachedCriteria detachedCriteria) {
+        return (List<T>) this.getHibernateTemplate().findByCriteria(detachedCriteria);
     }
 
 }

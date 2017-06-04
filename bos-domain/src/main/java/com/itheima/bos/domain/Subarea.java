@@ -1,5 +1,6 @@
 package com.itheima.bos.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -69,7 +70,7 @@ public class Subarea implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "decidedzone_id")
 	public DecidedZone getDecidedZone() {
 		return this.decidedZone;
@@ -79,7 +80,7 @@ public class Subarea implements java.io.Serializable {
 		this.decidedZone = decidedZone;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name = "region_id")
 	public Region getRegion() {
 		return this.region;

@@ -3,6 +3,8 @@ package com.itheima.bos.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import com.itheima.bos.domain.Region;
 import com.itheima.bos.utils.PageBean;
 
@@ -15,5 +17,7 @@ public interface IRegionService {
     Region findById(Serializable id);
 
     void update(Region entity);
+
+    List<Region> findListByCriteria(DetachedCriteria detachedCriteria);
 
 }
