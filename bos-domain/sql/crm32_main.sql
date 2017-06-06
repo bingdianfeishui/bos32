@@ -8,7 +8,7 @@ CREATE TABLE `t_customer`(
     `location` VARCHAR(255) DEFAULT NULL,
     `decidedzone_id` INT(11) DEFAULT NULL,
     PRIMARY KEY(`id`)
-);
+)AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 INSERT INTO `t_customer` VALUES ('1', '张三', '百度', '13811111111', '北京市西城区长安街100号', NULL);
 INSERT INTO `t_customer` VALUES ('2', '李四', '哇哈哈', '13822222222', '上海市虹桥区南京路250号', NULL);

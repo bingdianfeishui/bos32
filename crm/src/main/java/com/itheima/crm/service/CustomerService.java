@@ -39,6 +39,44 @@ public class CustomerService implements ICustomerService {
 		});
 		return list;
 	}
+
+    @Override
+    public List<Customer> findListNotAssociated() {
+        String sql = "SELECT * FROM t_customer WHERE decidedzone_id IS null";
+        List<Customer> list = jdbcTemplate.query(sql, new RowMapper<Customer>(){
+            @Override
+            public Customer mapRow(ResultSet rs, int rowNum)
+                    throws SQLException {
+                Integer id = rs.getInt("id");
+                String name=rs.getString("name");
+                String station = rs.getString("station");
+                String telephone = rs.getString("telephone");
+                String location = rs.getString("location");
+                Integer decidedZoneId = rs.getInt("decidedzone_id");
+                return new Customer(id, name, station, telephone, location, decidedZoneId);
+            }
+        });
+        return list;
+    }
+
+    @Override
+    public List<Customer> findListAssociatedToZone(Integer decidedZoneId) {
+        String sql = "SELECT * FROM t_customer WHERE decidedzone_id=?";
+        List<Customer> list = jdbcTemplate.query(sql, new RowMapper<Customer>(){
+            @Override
+            public Customer mapRow(ResultSet rs, int rowNum)
+                    throws SQLException {
+                Integer id = rs.getInt("id");
+                String name=rs.getString("name");
+                String station = rs.getString("station");
+                String telephone = rs.getString("telephone");
+                String location = rs.getString("location");
+                Integer decidedZoneId = rs.getInt("decidedzone_id");
+                return new Customer(id, name, station, telephone, location, decidedZoneId);
+            }
+        }, decidedZoneId);
+        return list;
+    }
 	
 //	public static void main(String[] args){
 //		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:cxf.xml");

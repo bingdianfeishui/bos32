@@ -27,6 +27,10 @@
 	src="${pageContext.request.contextPath }/js/easyui/locale/easyui-lang-zh_CN.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
+    function alertServerError(){
+      $.messager.alert('错误','服务器忙，请稍后重试！','error');
+    }
+	
 	function doAdd(){
 		$('#addDecidedzoneWindow').window("open");
 	}
@@ -44,7 +48,29 @@
 	}
 	
 	function doAssociations(){
-		$('#customerWindow').window('open');
+		var rows = $("#grid").datagrid("getSelections");
+		if(rows.length != 1){
+		  $.messager.alert("提示信息","请选择一个定区进行操作","warning");
+		}else{
+    		$('#customerWindow').window('open');
+    		
+    		//获取未关联的客户
+    		$.ajax({
+                type:"POST",
+                url:'decidedZong/findListNotAssociated.action',
+                error:function(){
+                    alertServerError();
+                },
+                success:function(data){
+                    for(var i = 0; i < data.length, i++){
+	                    $("#noassociationSelect").append("<option value="+ data[i].id +">");                  
+                    }
+                }
+            });
+    		
+    		
+    		//获取已关联到该定区的客户
+		}
 	}
 	
 	//工具栏

@@ -3,6 +3,7 @@ package com.itheima.crm.service;
 
 import java.util.List;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -33,6 +34,31 @@ public interface ICustomerService {
     @RequestWrapper(localName = "findAll", targetNamespace = "http://service.crm.itheima.com/", className = "com.itheima.crm.service.FindAll")
     @ResponseWrapper(localName = "findAllResponse", targetNamespace = "http://service.crm.itheima.com/", className = "com.itheima.crm.service.FindAllResponse")
     public List<Customer> findAll();
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<com.itheima.crm.service.Customer>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findListAssociatedToZone", targetNamespace = "http://service.crm.itheima.com/", className = "com.itheima.crm.service.FindListAssociatedToZone")
+    @ResponseWrapper(localName = "findListAssociatedToZoneResponse", targetNamespace = "http://service.crm.itheima.com/", className = "com.itheima.crm.service.FindListAssociatedToZoneResponse")
+    public List<Customer> findListAssociatedToZone(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Integer arg0);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<com.itheima.crm.service.Customer>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findListNotAssociated", targetNamespace = "http://service.crm.itheima.com/", className = "com.itheima.crm.service.FindListNotAssociated")
+    @ResponseWrapper(localName = "findListNotAssociatedResponse", targetNamespace = "http://service.crm.itheima.com/", className = "com.itheima.crm.service.FindListNotAssociatedResponse")
+    public List<Customer> findListNotAssociated();
 
     /**
      * 

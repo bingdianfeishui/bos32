@@ -10,4 +10,6 @@ import com.itheima.crm.domain.Customer;
 public interface ICustomerService {
 	String sayHello();
 	List<Customer> findAll();
+	List<Customer> findListNotAssociated();
+	List<Customer> findListAssociatedToZone(Integer decidedZoneId);
 }
