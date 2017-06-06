@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:soap="http://cxf.apache.org/bindings/soap"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context
@@ -9,7 +10,11 @@
 						http://www.springframework.org/schema/aop
 						http://www.springframework.org/schema/aop/spring-aop.xsd
 						http://www.springframework.org/schema/tx 
-						http://www.springframework.org/schema/tx/spring-tx.xsd">
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://cxf.apache.org/bindings/soap 
+						http://cxf.apache.org/schemas/configuration/soap.xsd
+						http://cxf.apache.org/jaxws 
+						http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<!-- 加载属性文件 -->
 	<context:property-placeholder location="classpath:db.properties" />
@@ -62,4 +67,8 @@
 	<!-- 开启注解驱动 -->
 	<context:annotation-config />
 
+	<!-- Crm Cxf -->
+	<jaxws:client id="crmService"
+		serviceClass="com.itheima.crm.service.ICustomerService" 
+		address="http://localhost:8081/crm/service/customer"></jaxws:client>
 </beans>

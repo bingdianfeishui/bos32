@@ -26,7 +26,7 @@ insert  into `bc_staff`(`id`,`NAME`,`telephone`,`haspda`,`deltag`,`station`,`sta
 
 /*Data for the table `bc_subarea` */
 
-insert  into `bc_subarea`(`id`,`decidedzone_id`,`region_id`,`addresskey`,`startnum`,`endnum`,`single`,`POSITION`) values (1,NULL,102070,'平西府2','1','100','0','北青路100号'),(2,NULL,102143,'希望城','1','100','2','龙泉山北路一段20号'),(3,NULL,102109,'武侯祠','2','19','1','武侯路xx号'),(4,NULL,100017,'火车站','100','200','0','站前广场'),(5,NULL,102585,'光明小区','200','400','1','北滨路光明小区'),(6,NULL,102067,'袁家岗','19','280','0','袁家岗汇林路'),(7,NULL,102147,'小雁塔','1','200','2','黄山路');
+insert  into `bc_subarea`(`id`,`decidedzone_id`,`region_id`,`addresskey`,`startnum`,`endnum`,`single`,`POSITION`) values (100001,NULL,102070,'平西府2','1','100','0','北青路100号'),(100002,NULL,102143,'希望城','1','100','2','龙泉山北路一段20号'),(100003,NULL,102109,'武侯祠','2','19','1','武侯路xx号'),(100004,NULL,100017,'火车站','100','200','0','站前广场'),(100005,NULL,102585,'光明小区','200','400','1','北滨路光明小区'),(100006,NULL,102067,'袁家岗','19','280','0','袁家岗汇林路'),(100007,NULL,102147,'小雁塔','1','200','2','黄山路');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
