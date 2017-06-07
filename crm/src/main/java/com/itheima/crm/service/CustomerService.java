@@ -2,11 +2,17 @@ package com.itheima.crm.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.itheima.crm.domain.Customer;
 
@@ -18,7 +24,11 @@ public class CustomerService implements ICustomerService {
 	}
 	
 	public String sayHello(){
-		return "Hi, web service!!";
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		System.out.println("请求IP："+request.getHeader("x-forwarded-for"));
+		System.out.println();
+		
+		return "Hi, web service!! " + request.getHeader("x-forwarded-for");
 	}
 
 	@Override
@@ -77,6 +87,22 @@ public class CustomerService implements ICustomerService {
         }, decidedZoneId);
         return list;
     }
+
+	@Override
+	public void associateCustomersToDecidedZone(Integer decidedZoneId,
+			Integer[] customersIds) {
+//		System.out.println(decidedZoneId);
+//		System.out.println(customersIds);
+		String sql1 = "UPDATE t_customer SET decidedzone_id=NULL where decidedzone_id=?";
+		jdbcTemplate.update(sql1, decidedZoneId);
+		
+		if(customersIds!=null){
+			String sql2 = "UPDATE t_customer SET decidedzone_id=? where id=?";
+			for (Integer id : customersIds) {
+				jdbcTemplate.update(sql2, decidedZoneId, id);
+			}
+		}
+	}
 	
 //	public static void main(String[] args){
 //		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:cxf.xml");

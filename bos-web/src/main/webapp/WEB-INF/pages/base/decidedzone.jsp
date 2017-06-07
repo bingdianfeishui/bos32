@@ -52,24 +52,40 @@
 		if(rows.length != 1){
 		  $.messager.alert("提示信息","请选择一个定区进行操作","warning");
 		}else{
+			$("#customerForm").form('load',rows[0]);
     		$('#customerWindow').window('open');
+    		$("#noassociationSelect").empty();
+    		$("#associationSelect").empty();
     		
     		//获取未关联的客户
     		$.ajax({
                 type:"POST",
-                url:'decidedZong/findListNotAssociated.action',
+                url:'decidedZone/findListNotAssociated.action',
                 error:function(){
                     alertServerError();
                 },
                 success:function(data){
-                    for(var i = 0; i < data.length, i++){
-	                    $("#noassociationSelect").append("<option value="+ data[i].id +">");                  
+                    for(var i = 0; i < data.length; i++){
+	                    $("#noassociationSelect").append("<option value="+ data[i].id +">"+data[i].name+"("+data[i].telephone+")"+"</option>");                  
                     }
                 }
             });
     		
-    		
     		//获取已关联到该定区的客户
+    		$.ajax({
+                type:"POST",
+                url:'decidedZone/findListHasAssociated.action',
+                data:{"id":rows[0].id},
+                dataType:'json',
+                error:function(){
+                    alertServerError();
+                },
+                success:function(data){
+                    for(var i = 0; i < data.length; i++){
+	                    $("#associationSelect").append("<option value="+ data[i].id +">"+data[i].name+"("+data[i].telephone+")"+"</option>");                  
+                    }
+                }
+            });
 		}
 	}
 	
@@ -180,6 +196,21 @@
 	    });
 		$("#btn").click(function(){
 			alert("执行查询...");
+		});
+		
+		$("#toRight").click(function(){
+			$("#associationSelect").append($("#noassociationSelect option:selected"));
+		});
+		
+		$("#toLeft").click(function(){
+			$("#noassociationSelect").append($("#associationSelect option:selected"));
+		});
+		
+		$("#associationBtn").click(function(){
+			//提交表单之前，需要将右侧下拉框中所有的选项选中,为option添加一个selected属性
+			$("#associationSelect option").attr("selected","selected");
+			$("#customerForm").form('submit');
+			$('#customerWindow').window('close');
 		});
 		
 	});
@@ -366,7 +397,7 @@
 	<!-- 关联客户窗口 -->
 	<div class="easyui-window" title="关联客户窗口" id="customerWindow" collapsible="false" closed="true" minimizable="false" maximizable="false" style="top:20px;left:200px;width: 400px;height: 300px;">
 		<div style="overflow:auto;padding:5px;" border="false">
-			<form id="customerForm" action="${pageContext.request.contextPath }/decidedzone_assigncustomerstodecidedzone.action" method="post">
+			<form id="customerForm" action="${pageContext.request.contextPath }/decidedZone/associateCustomers.action" method="post">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="3">关联客户</td>

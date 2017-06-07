@@ -12,4 +12,5 @@ public interface ICustomerService {
 	List<Customer> findAll();
 	List<Customer> findListNotAssociated();
 	List<Customer> findListAssociatedToZone(Integer decidedZoneId);
+	void associateCustomersToDecidedZone(Integer decidedZoneId, Integer[] customersIds);
 }

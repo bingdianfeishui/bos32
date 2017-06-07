@@ -62,6 +62,20 @@ public interface ICustomerService {
 
     /**
      * 
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "associateCustomersToDecidedZone", targetNamespace = "http://service.crm.itheima.com/", className = "com.itheima.crm.service.AssociateCustomersToDecidedZone")
+    @ResponseWrapper(localName = "associateCustomersToDecidedZoneResponse", targetNamespace = "http://service.crm.itheima.com/", className = "com.itheima.crm.service.AssociateCustomersToDecidedZoneResponse")
+    public void associateCustomersToDecidedZone(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Integer arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        List<Integer> arg1);
+
+    /**
+     * 
      * @return
      *     returns java.lang.String
      */
