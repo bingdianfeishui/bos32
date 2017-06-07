@@ -5,7 +5,7 @@ CREATE TABLE `t_customer`(
     `name` VARCHAR(50) DEFAULT NULL,
     `station` VARCHAR(50) DEFAULT NULL,
     `telephone` VARCHAR(50) DEFAULT NULL,
-    `location` VARCHAR(255) DEFAULT NULL,
+    `address` VARCHAR(255) DEFAULT NULL,
     `decidedzone_id` INT(11) DEFAULT NULL,
     PRIMARY KEY(`id`)
 )AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

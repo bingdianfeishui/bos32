@@ -22,4 +22,6 @@ public interface ISubareaService {
 
     List<Subarea> findAll();
 
+    List<Subarea> findListByDecidedZoneId(Integer decidedZoneId);
+
 }

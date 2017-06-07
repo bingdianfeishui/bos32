@@ -215,14 +215,13 @@
 		
 	});
 
-	function doDblClickRow(){
-		alert("双击表格数据...");
+	function doDblClickRow(index, row){
 		$('#association_subarea').datagrid( {
 			fit : true,
 			border : true,
 			rownumbers : true,
 			striped : true,
-			url : "json/association_subarea.json",
+			url : "subarea/findListByDecidedZoneId.action?decidedZoneId=" + row.id,
 			columns : [ [{
 				field : 'id',
 				title : '分拣编号',
@@ -395,7 +394,7 @@
 	</div>
 	
 	<!-- 关联客户窗口 -->
-	<div class="easyui-window" title="关联客户窗口" id="customerWindow" collapsible="false" closed="true" minimizable="false" maximizable="false" style="top:20px;left:200px;width: 400px;height: 300px;">
+	<div class="easyui-window" title="关联客户窗口" id="customerWindow" collapsible="false" closed="true" minimizable="false" maximizable="false" style="top:20px;left:200px;width: 500px;height: 350px;">
 		<div style="overflow:auto;padding:5px;" border="false">
 			<form id="customerForm" action="${pageContext.request.contextPath }/decidedZone/associateCustomers.action" method="post">
 				<table class="table-edit" width="80%" align="center">
@@ -405,14 +404,16 @@
 					<tr>
 						<td>
 							<input type="hidden" name="id" id="customerDecidedZoneId" />
-							<select id="noassociationSelect" multiple="multiple" size="10"></select>
+							<select id="noassociationSelect" multiple="multiple" size="10" style="width:200px"></select>
 						</td>
 						<td>
-							<input type="button" value="》》" id="toRight"><br/>
+							<input type="button" value="》》" id="toRight">
+							<br/>
+							<br/>
 							<input type="button" value="《《" id="toLeft">
 						</td>
 						<td>
-							<select id="associationSelect" name="customerIds" multiple="multiple" size="10"></select>
+							<select id="associationSelect" name="customerIds" multiple="multiple" size="10" style="width:200px"></select>
 						</td>
 					</tr>
 					<tr>

@@ -7,18 +7,18 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>customer complex typeµÄ Java Àà¡£
+ * <p>customer complex typeçš„ Java ç±»ã€‚
  * 
- * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖĞµÄÔ¤ÆÚÄÚÈİ¡£
+ * <p>ä»¥ä¸‹æ¨¡å¼ç‰‡æ®µæŒ‡å®šåŒ…å«åœ¨æ­¤ç±»ä¸­çš„é¢„æœŸå†…å®¹ã€‚
  * 
  * <pre>
  * &lt;complexType name="customer">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="address" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="decidedZoneId" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="location" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="station" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="telephone" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -32,24 +32,48 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "customer", propOrder = {
+    "address",
     "decidedZoneId",
     "id",
-    "location",
     "name",
     "station",
     "telephone"
 })
 public class Customer {
 
+    protected String address;
     protected Integer decidedZoneId;
     protected Integer id;
-    protected String location;
     protected String name;
     protected String station;
     protected String telephone;
 
     /**
-     * »ñÈ¡decidedZoneIdÊôĞÔµÄÖµ¡£
+     * è·å–addresså±æ€§çš„å€¼ã€‚
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * è®¾ç½®addresså±æ€§çš„å€¼ã€‚
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAddress(String value) {
+        this.address = value;
+    }
+
+    /**
+     * è·å–decidedZoneIdå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -61,7 +85,7 @@ public class Customer {
     }
 
     /**
-     * ÉèÖÃdecidedZoneIdÊôĞÔµÄÖµ¡£
+     * è®¾ç½®decidedZoneIdå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -73,7 +97,7 @@ public class Customer {
     }
 
     /**
-     * »ñÈ¡idÊôĞÔµÄÖµ¡£
+     * è·å–idå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -85,7 +109,7 @@ public class Customer {
     }
 
     /**
-     * ÉèÖÃidÊôĞÔµÄÖµ¡£
+     * è®¾ç½®idå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -97,31 +121,7 @@ public class Customer {
     }
 
     /**
-     * »ñÈ¡locationÊôĞÔµÄÖµ¡£
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getLocation() {
-        return location;
-    }
-
-    /**
-     * ÉèÖÃlocationÊôĞÔµÄÖµ¡£
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setLocation(String value) {
-        this.location = value;
-    }
-
-    /**
-     * »ñÈ¡nameÊôĞÔµÄÖµ¡£
+     * è·å–nameå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -133,7 +133,7 @@ public class Customer {
     }
 
     /**
-     * ÉèÖÃnameÊôĞÔµÄÖµ¡£
+     * è®¾ç½®nameå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -145,7 +145,7 @@ public class Customer {
     }
 
     /**
-     * »ñÈ¡stationÊôĞÔµÄÖµ¡£
+     * è·å–stationå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -157,7 +157,7 @@ public class Customer {
     }
 
     /**
-     * ÉèÖÃstationÊôĞÔµÄÖµ¡£
+     * è®¾ç½®stationå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -169,7 +169,7 @@ public class Customer {
     }
 
     /**
-     * »ñÈ¡telephoneÊôĞÔµÄÖµ¡£
+     * è·å–telephoneå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -181,7 +181,7 @@ public class Customer {
     }
 
     /**
-     * ÉèÖÃtelephoneÊôĞÔµÄÖµ¡£
+     * è®¾ç½®telephoneå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is

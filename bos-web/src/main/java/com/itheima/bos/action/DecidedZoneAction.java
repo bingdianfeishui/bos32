@@ -32,7 +32,6 @@ public class DecidedZoneAction extends BaseAction<DecidedZone> {
 
         JacksonUtils.init(Customer.class).serializeObj(BOSUtils.getResponse(),
                 list);
-
         return NONE;
     }
     

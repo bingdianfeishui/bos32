@@ -42,9 +42,9 @@ public class CustomerService implements ICustomerService {
 				String name=rs.getString("name");
 				String station = rs.getString("station");
 				String telephone = rs.getString("telephone");
-				String location = rs.getString("location");
+				String address = rs.getString("address");
 				Integer decidedZoneId = rs.getInt("decidedzone_id");
-				return new Customer(id, name, station, telephone, location, decidedZoneId);
+				return new Customer(id, name, station, telephone, address, decidedZoneId);
 			}
 		});
 		return list;
@@ -61,9 +61,9 @@ public class CustomerService implements ICustomerService {
                 String name=rs.getString("name");
                 String station = rs.getString("station");
                 String telephone = rs.getString("telephone");
-                String location = rs.getString("location");
+                String address = rs.getString("address");
                 Integer decidedZoneId = rs.getInt("decidedzone_id");
-                return new Customer(id, name, station, telephone, location, decidedZoneId);
+                return new Customer(id, name, station, telephone, address, decidedZoneId);
             }
         });
         return list;
@@ -80,9 +80,9 @@ public class CustomerService implements ICustomerService {
                 String name=rs.getString("name");
                 String station = rs.getString("station");
                 String telephone = rs.getString("telephone");
-                String location = rs.getString("location");
+                String address = rs.getString("address");
                 Integer decidedZoneId = rs.getInt("decidedzone_id");
-                return new Customer(id, name, station, telephone, location, decidedZoneId);
+                return new Customer(id, name, station, telephone, address, decidedZoneId);
             }
         }, decidedZoneId);
         return list;

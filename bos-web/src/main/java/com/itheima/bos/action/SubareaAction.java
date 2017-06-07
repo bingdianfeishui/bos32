@@ -127,7 +127,7 @@ public class SubareaAction extends BaseAction<Subarea> {
 
     @Action("findByQ")
     public String findByQ() {
-        subareaService.findListByCriteria(pageBean.getDetachedCriteria());
+        // TODO Auto-generated method stub
         return NONE;
     }
 
@@ -148,11 +148,11 @@ public class SubareaAction extends BaseAction<Subarea> {
         headRow.createCell(5).setCellValue("位置信息");
         headRow.createCell(6).setCellValue("省市区");
 
-        sheet.setColumnWidth(5,20*2*256);
-        sheet.setColumnWidth(6,20*2*256);
-        
+        sheet.setColumnWidth(5, 20 * 2 * 256);
+        sheet.setColumnWidth(6, 20 * 2 * 256);
+
         for (Subarea sb : list) {
-            Row row = sheet.createRow(sheet.getLastRowNum()+1);
+            Row row = sheet.createRow(sheet.getLastRowNum() + 1);
             row.createCell(0).setCellValue(sb.getId());
             row.createCell(1).setCellValue(sb.getAddresskey());
             row.createCell(2).setCellValue(sb.getStartnum());
@@ -161,22 +161,33 @@ public class SubareaAction extends BaseAction<Subarea> {
             row.createCell(5).setCellValue(sb.getPosition());
             row.createCell(6).setCellValue(sb.getRegion().getName());
         }
-        
+
         // 3. 下载
-        String filename = "subareas.xls";   //默认文件名
+        String filename = "subareas.xls"; // 默认文件名
         try {
             filename = URLEncoder.encode(DOWNLOAD_FILENAME, "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        
+
         BOSUtils.getResponse().setContentType(
                 ServletActionContext.getServletContext().getMimeType(
                         DOWNLOAD_FILENAME));
-        BOSUtils.getResponse().setCharacterEncoding("utf-8"); 
+        BOSUtils.getResponse().setCharacterEncoding("utf-8");
         BOSUtils.getResponse().setHeader("content-disposition",
                 "attachment; filename=" + filename);
         workbook.write(BOSUtils.getResponse().getOutputStream());
+        return NONE;
+    }
+
+    @Action("findListByDecidedZoneId")
+    public String findListByDecidedZoneId() throws IOException {
+        List<Subarea> list = subareaService
+                .findListByDecidedZoneId(decidedZoneId);
+        JacksonUtils.init(Subarea.class).setExceptProperties("decidedZone")
+                .addMixIn(Region.class, RegionMixIn.class)
+                .serializeObj(BOSUtils.getResponse(), list);
+
         return NONE;
     }
 
@@ -188,6 +199,11 @@ public class SubareaAction extends BaseAction<Subarea> {
 
     @Autowired
     private IRegionService regionService;
+
+    private Integer decidedZoneId;
+    public void setDecidedZoneId(Integer decidedZoneId) {
+        this.decidedZoneId = decidedZoneId;
+    }
 
     private static final String DOWNLOAD_FILENAME = "分区数据.xls";
 

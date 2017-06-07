@@ -5,17 +5,17 @@ public class Customer {
 	private String name;
 	private String station;
 	private String telephone;
-	private String location;
+	private String address;
 	private Integer decidedZoneId;
 	
 	public Customer(Integer id, String name, String station, String telephone,
-			String location, Integer decidedZoneId) {
+			String address, Integer decidedZoneId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.station = station;
 		this.telephone = telephone;
-		this.location = location;
+		this.address = address;
 		this.decidedZoneId = decidedZoneId;
 	}
 	public Customer() {
@@ -45,11 +45,11 @@ public class Customer {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	public String getLocation() {
-		return location;
+	public String getAddress() {
+		return address;
 	}
-	public void setLocation(String location) {
-		this.location = location;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public Integer getDecidedZoneId() {
 		return decidedZoneId;
@@ -60,7 +60,7 @@ public class Customer {
 	@Override
 	public String toString() {
 		return "Customer [id=" + id + ", name=" + name + ", station=" + station
-				+ ", telephone=" + telephone + ", location=" + location
+				+ ", telephone=" + telephone + ", address=" + address
 				+ ", decidedZoneId=" + decidedZoneId + "]";
 	}
 }

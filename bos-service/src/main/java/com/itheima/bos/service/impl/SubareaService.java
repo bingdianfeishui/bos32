@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,14 @@ public class SubareaService implements ISubareaService {
     @Override
     public List<Subarea> findAll() {
         return subareaDao.findAll();
+    }
+
+    @Override
+    public List<Subarea> findListByDecidedZoneId(Integer decidedZoneId) {
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Subarea.class);
+        detachedCriteria.add(Restrictions.eq("decidedZone.id", decidedZoneId));
+        
+        return subareaDao.findListByDetachedCriteria(detachedCriteria);
     }
 
 }
