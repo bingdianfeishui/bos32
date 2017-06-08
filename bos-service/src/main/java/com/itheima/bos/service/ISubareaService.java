@@ -24,4 +24,6 @@ public interface ISubareaService {
 
     List<Subarea> findListByDecidedZoneId(Integer decidedZoneId);
 
+    List<Subarea> listNoDecidedZone();
+
 }

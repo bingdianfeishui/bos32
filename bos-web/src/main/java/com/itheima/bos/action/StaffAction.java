@@ -136,10 +136,22 @@ public class StaffAction extends BaseAction<Staff> {
         return null;
     }
 
+    @Action("findByQ")
     @Override
     public String findByQ() throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        List<Staff> list = new ArrayList<>();
+        if (StringUtils.isBlank(q)) {
+            staffService.pageQuery(pageBean);
+            list = pageBean.getRows();
+        } else {
+            list = staffService.findByQ(q);
+        }
+
+        JacksonUtils.init(Staff.class)
+                .setIncludeProperties("id", "name", "telephone", "desc")
+                .serializeObj(BOSUtils.getResponse(), list);
+
+        return NONE;
     }
 
     // endregion actions
@@ -177,6 +189,7 @@ public class StaffAction extends BaseAction<Staff> {
 
     /**
      * 属性驱动，批量操作传入的ids字符串，多个id以逗号隔开
+     * 
      * @param ids
      */
     public void setIds(String ids) {
@@ -185,6 +198,7 @@ public class StaffAction extends BaseAction<Staff> {
 
     /**
      * 批量删除或恢复的实际执行方法
+     * 
      * @param ids
      * @param op
      * @throws IOException

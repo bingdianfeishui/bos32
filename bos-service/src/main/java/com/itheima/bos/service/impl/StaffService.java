@@ -1,8 +1,12 @@
 package com.itheima.bos.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +64,18 @@ public class StaffService implements IStaffService {
 
     public void update(Staff staff) {
         staffDao.update(staff);
+    }
+
+    @Override
+    public List<Staff> findByQ(String q) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Staff.class);
+        Disjunction dis = Restrictions.disjunction();
+//        dis.add(Restrictions.like("id", "%"+q+"%"));
+        dis.add(Restrictions.like("name", "%"+q+"%"));
+        dis.add(Restrictions.like("telephone", "%"+q+"%"));
+        dis.add(Restrictions.like("station", "%"+q+"%"));
+        criteria.add(dis);
+        return staffDao.findListByDetachedCriteria(criteria );
     }
 
 }

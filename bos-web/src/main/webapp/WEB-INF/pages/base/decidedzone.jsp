@@ -60,7 +60,7 @@
     		//获取未关联的客户
     		$.ajax({
                 type:"POST",
-                url:'decidedZone/findListNotAssociated.action',
+                url:'decidedZone/listCustomersNotAssociated.action',
                 error:function(){
                     alertServerError();
                 },
@@ -74,7 +74,7 @@
     		//获取已关联到该定区的客户
     		$.ajax({
                 type:"POST",
-                url:'decidedZone/findListHasAssociated.action',
+                url:'decidedZone/listCustomersAssociatedById.action',
                 data:{"id":rows[0].id},
                 dataType:'json',
                 error:function(){
@@ -167,7 +167,7 @@
 			pageList: [30,50,100],
 			pagination : true,
 			toolbar : toolbar,
-			url : "json/decidedzone.json",
+			url : "decidedZone/pageQuery.action",
 			idField : 'id',
 			columns : columns,
 			onDblClickRow : doDblClickRow
@@ -194,7 +194,7 @@
 	        height: 400,
 	        resizable:false
 	    });
-		$("#btn").click(function(){
+		$("#searchBtn").click(function(){
 			alert("执行查询...");
 		});
 		
@@ -283,7 +283,7 @@
 			border : true,
 			rownumbers : true,
 			striped : true,
-			url : "json/association_customer.json",
+			url : "decidedZone/listCustomersAssociatedById.action?id=" + row.id,
 			columns : [[{
 				field : 'id',
 				title : '客户编号',
@@ -331,12 +331,12 @@
 		</div>
 		
 		<div style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="addDecidedZoneForm">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">定区信息</td>
 					</tr>
-					<tr>
+					<tr style="display:none">
 						<td>定区编码</td>
 						<td><input type="text" name="id" class="easyui-validatebox" required="true"/></td>
 					</tr>
@@ -348,13 +348,13 @@
 						<td>选择负责人</td>
 						<td>
 							<input class="easyui-combobox" name="region.id"  
-    							data-options="valueField:'id',textField:'name',url:'json/standard.json'" />  
+    							data-options="valueField:'id',textField:'desc',mode:'remote', delay:500,url:'staff/findByQ.action'" />  
 						</td>
 					</tr>
 					<tr height="300">
 						<td valign="top">关联分区</td>
 						<td>
-							<table id="subareaGrid"  class="easyui-datagrid" border="false" style="width:300px;height:300px" data-options="url:'json/decidedzone_subarea.json',fitColumns:true,singleSelect:false">
+							<table id="subareaGrid"  class="easyui-datagrid" border="false" style="width:300px;height:300px" data-options="url:'subarea/listNoDecidedZone.action',fitColumns:true,singleSelect:false">
 								<thead>  
 							        <tr>  
 							            <th data-options="field:'id',width:30,checkbox:true">编号</th>  
@@ -372,7 +372,7 @@
 	<!-- 查询定区 -->
 	<div class="easyui-window" title="查询定区窗口" id="searchWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 		<div style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="searchForm">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">查询条件</td>
@@ -386,7 +386,7 @@
 						<td><input type="text" name="staff.station" class="easyui-validatebox" required="true"/></td>
 					</tr>
 					<tr>
-						<td colspan="2"><a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a> </td>
+						<td colspan="2"><a id="searchBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a> </td>
 					</tr>
 				</table>
 			</form>

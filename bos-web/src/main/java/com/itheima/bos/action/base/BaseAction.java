@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.regex.Pattern;
 
+import com.itheima.bos.utils.BOSUtils;
 import com.itheima.bos.utils.PageBean;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -86,4 +87,12 @@ public abstract class BaseAction<T> extends ActionSupport implements
 
     public abstract String findByQ() throws IOException;
 
+    
+    protected void returnBlankJasonObj(){
+        try {
+            BOSUtils.getResponse().getWriter().write("{}");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 @JsonFilter("pageBeanFilter")
 public class PageBean<T>{
     //当前页码
-    private int currentPage;
+    private int currentPage = 1;
     //每页条数
-    private int pageSize;   
+    private int pageSize = 20;   
     //总记录数
     private int total;  //总记录数
     //查询结果集

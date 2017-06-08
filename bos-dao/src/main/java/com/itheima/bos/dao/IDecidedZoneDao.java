@@ -1,5 +1,7 @@
 package com.itheima.bos.dao;
 
-public interface IDecidedZoneDao {
+import com.itheima.bos.domain.DecidedZone;
+
+public interface IDecidedZoneDao extends IBaseDao<DecidedZone>{
 
 }

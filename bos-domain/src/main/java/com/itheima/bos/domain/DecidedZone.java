@@ -66,7 +66,7 @@ public class DecidedZone implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "staff_id")
 	public Staff getStaff() {
 		return this.staff;

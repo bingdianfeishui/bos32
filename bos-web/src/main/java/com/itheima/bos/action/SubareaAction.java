@@ -184,9 +184,27 @@ public class SubareaAction extends BaseAction<Subarea> {
     public String findListByDecidedZoneId() throws IOException {
         List<Subarea> list = subareaService
                 .findListByDecidedZoneId(decidedZoneId);
-        JacksonUtils.init(Subarea.class).setExceptProperties("decidedZone")
-                .addMixIn(Region.class, RegionMixIn.class)
-                .serializeObj(BOSUtils.getResponse(), list);
+        if (list != null && list.size() > 0) {
+            JacksonUtils.init(Subarea.class).setExceptProperties("decidedZone")
+                    .addMixIn(Region.class, RegionMixIn.class)
+                    .serializeObj(BOSUtils.getResponse(), list);
+        } else {
+            BOSUtils.getResponse().getWriter().write("[]");
+        }
+
+        return NONE;
+    }
+
+    @Action("listNoDecidedZone")
+    public String listNoDecidedZone() throws IOException {
+        List<Subarea> list = subareaService.listNoDecidedZone();
+        if (list != null && list.size() > 0) {
+            JacksonUtils.init(Subarea.class)
+                    .setIncludeProperties("id", "addresskey", "position")
+                    .serializeObj(BOSUtils.getResponse(), list);
+        } else {
+            BOSUtils.getResponse().getWriter().write("[]");
+        }
 
         return NONE;
     }
@@ -201,6 +219,7 @@ public class SubareaAction extends BaseAction<Subarea> {
     private IRegionService regionService;
 
     private Integer decidedZoneId;
+
     public void setDecidedZoneId(Integer decidedZoneId) {
         this.decidedZoneId = decidedZoneId;
     }
