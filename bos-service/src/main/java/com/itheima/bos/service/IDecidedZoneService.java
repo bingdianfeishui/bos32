@@ -8,4 +8,6 @@ public interface IDecidedZoneService {
     void pageQuery(PageBean<DecidedZone> pageBean);
 
     void saveOrUpdate(DecidedZone entity);
+
+	void save(DecidedZone model, Integer[] subareaId);
 }

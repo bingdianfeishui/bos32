@@ -25,4 +25,10 @@ public class DecidedZoneService implements IDecidedZoneService {
     public void saveOrUpdate(DecidedZone entity) {
         decidedZoneDao.saveOrUpdate(entity);
     }
+
+	@Override
+	public void save(DecidedZone model, Integer[] subareaId) {
+		// TODO Auto-generated method stub
+		
+	}
 }

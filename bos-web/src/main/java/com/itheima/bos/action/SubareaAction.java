@@ -200,7 +200,7 @@ public class SubareaAction extends BaseAction<Subarea> {
         List<Subarea> list = subareaService.listNoDecidedZone();
         if (list != null && list.size() > 0) {
             JacksonUtils.init(Subarea.class)
-                    .setIncludeProperties("id", "addresskey", "position")
+                    .setIncludeProperties("subareaId", "addresskey", "position")
                     .serializeObj(BOSUtils.getResponse(), list);
         } else {
             BOSUtils.getResponse().getWriter().write("[]");

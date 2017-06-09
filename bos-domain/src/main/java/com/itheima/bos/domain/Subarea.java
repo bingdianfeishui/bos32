@@ -1,5 +1,6 @@
 package com.itheima.bos.domain;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Subarea entity. @author MyEclipse Persistence Tools
@@ -33,6 +35,11 @@ public class Subarea implements java.io.Serializable {
 	private String single;
 	private String position;
 
+	@Transient
+	public Integer getSubareaId(){
+		return this.id;
+	}
+	
 	// Constructors
 
 	/** default constructor */

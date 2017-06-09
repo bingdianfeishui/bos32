@@ -26,6 +26,9 @@
 <script
 	src="${pageContext.request.contextPath }/js/easyui/locale/easyui-lang-zh_CN.js"
 	type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath }/js/customExt.js"
+	type="text/javascript"></script>
 <script type="text/javascript">
     function alertServerError(){
       $.messager.alert('错误','服务器忙，请稍后重试！','error');
@@ -197,6 +200,28 @@
 		$("#searchBtn").click(function(){
 			alert("执行查询...");
 		});
+		$("#save").click(function(){
+			var r = $("#addDecidedZoneForm").form('validate');
+			if(r){
+				$.ajax({
+					type: 'POST',
+					url: 'decidedZone/add.action',
+					data:$("#addDecidedZoneForm").serialize(),
+					//dataType:'json',
+					error: function(res){
+						alertServerError();
+					},
+					success: function(res){
+						if($.trim(res) == "" || res == null){
+							$.messager.alert("提示","添加定区成功！请双击定区行查看结果。","info");
+							$('#customerWindow').window('close');
+						}else{
+							alertServerError();
+						}
+					}
+				});
+			}
+		});
 		
 		$("#toRight").click(function(){
 			$("#associationSelect").append($("#noassociationSelect option:selected"));
@@ -209,8 +234,24 @@
 		$("#associationBtn").click(function(){
 			//提交表单之前，需要将右侧下拉框中所有的选项选中,为option添加一个selected属性
 			$("#associationSelect option").attr("selected","selected");
-			$("#customerForm").form('submit');
-			$('#customerWindow').window('close');
+			//$("#customerForm").form('submit');
+			$.ajax({
+				type: 'POST',
+				url: 'decidedZone/associateCustomers.action',
+				data:$("#customerForm").serialize(),
+				error: function(res){
+					alertServerError();
+				},
+				success: function(res){
+					if($.trim(res) == "" || res == null){
+						$.messager.alert("提示","关联客户成功！请双击定区行查看结果。","info");
+						$('#customerWindow').window('close');
+					}else{
+						alertServerError();
+					}
+				}
+			});
+			
 		});
 		
 	});
@@ -322,7 +363,7 @@
 		</div>
 	</div>
 	
-	<!-- 添加 修改分区 -->
+	<!-- 添加 分区 -->
 	<div class="easyui-window" title="定区添加修改" id="addDecidedzoneWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 		<div style="height:31px;overflow:hidden;" split="false" border="false" >
 			<div class="datagrid-toolbar">
@@ -336,10 +377,6 @@
 					<tr class="title">
 						<td colspan="2">定区信息</td>
 					</tr>
-					<tr style="display:none">
-						<td>定区编码</td>
-						<td><input type="text" name="id" class="easyui-validatebox" required="true"/></td>
-					</tr>
 					<tr>
 						<td>定区名称</td>
 						<td><input type="text" name="name" class="easyui-validatebox" required="true"/></td>
@@ -347,7 +384,7 @@
 					<tr>
 						<td>选择负责人</td>
 						<td>
-							<input class="easyui-combobox" name="region.id"  
+							<input class="easyui-combobox" name="staff.id"  
     							data-options="valueField:'id',textField:'desc',mode:'remote', delay:500,url:'staff/findByQ.action'" />  
 						</td>
 					</tr>
@@ -357,7 +394,7 @@
 							<table id="subareaGrid"  class="easyui-datagrid" border="false" style="width:300px;height:300px" data-options="url:'subarea/listNoDecidedZone.action',fitColumns:true,singleSelect:false">
 								<thead>  
 							        <tr>  
-							            <th data-options="field:'id',width:30,checkbox:true">编号</th>  
+							            <th data-options="field:'subareaId',width:30,checkbox:true">编号</th>  
 							            <th data-options="field:'addresskey',width:150">关键字</th>  
 							            <th data-options="field:'position',width:200,align:'right'">位置</th>  
 							        </tr>  

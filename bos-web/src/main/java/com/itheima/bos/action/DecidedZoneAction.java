@@ -66,7 +66,7 @@ public class DecidedZoneAction extends BaseAction<DecidedZone> {
     @Action("add")
     @Override
     public String add() throws IOException {
-        // TODO Auto-generated method stub
+        decidedZoneService.save(model, subareaId);
         return NONE;
     }
 
@@ -134,10 +134,15 @@ public class DecidedZoneAction extends BaseAction<DecidedZone> {
     interface DecidedZoneMixIn {
     }
 
-    private List<Integer> customerIds = new ArrayList<Integer>(10);
+    private List<Integer> customerIds = new ArrayList<Integer>(0);
 
     public void setCustomerIds(List<Integer> customerIds) {
         this.customerIds = customerIds;
     }
+
+    private Integer[] subareaId;
+    public void setSubareaId(Integer[] subareaId) {
+		this.subareaId = subareaId;
+	}
     // endregion private fiedlds and methods
 }
