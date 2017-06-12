@@ -39,7 +39,20 @@
 	}
 	
 	function doEdit(){
-		alert("修改...");
+	    var rows = $("#grid").datagrid("getSelections");
+        if(rows.length != 1){
+          $.messager.alert("提示信息","请选择一个定区进行操作","warning");
+        }else{
+			$('#addDecidedzoneWindow').window("open");
+            $("#addDecidedZoneForm").form('load',rows[0]);
+			$("#staffCombo").combobox({
+			 data:{
+			     "id":rows[0].staff.id,
+			     "desc":rows[0].staff.name
+			 }
+			});
+			
+        }
 	}
 	
 	function doDelete(){
@@ -203,9 +216,13 @@
 		$("#save").click(function(){
 			var r = $("#addDecidedZoneForm").form('validate');
 			if(r){
+			    var action = 'decidedZone/add.action';
+			    if($("#addDecidedZoneForm input[name='id']").val() != "")
+			         action = 'decidedZone/edit.action';
+			   
 				$.ajax({
 					type: 'POST',
-					url: 'decidedZone/add.action',
+					url: action,
 					data:$("#addDecidedZoneForm").serialize(),
 					//dataType:'json',
 					error: function(res){
@@ -213,8 +230,9 @@
 					},
 					success: function(res){
 						if($.trim(res) == "" || res == null){
-							$.messager.alert("提示","添加定区成功！请双击定区行查看结果。","info");
-							$('#customerWindow').window('close');
+							$.messager.alert("提示","操作成功！请双击定区行查看结果。","info");
+							$('#addDecidedzoneWindow').window('close');
+							$("#grid").datagrid('reload');
 						}else{
 							alertServerError();
 						}
@@ -246,6 +264,7 @@
 					if($.trim(res) == "" || res == null){
 						$.messager.alert("提示","关联客户成功！请双击定区行查看结果。","info");
 						$('#customerWindow').window('close');
+						$("#grid").datagrid('reload');
 					}else{
 						alertServerError();
 					}
@@ -373,6 +392,7 @@
 		
 		<div style="overflow:auto;padding:5px;" border="false">
 			<form id="addDecidedZoneForm">
+				<input type="hidden" name="id"/>
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">定区信息</td>
@@ -382,12 +402,22 @@
 						<td><input type="text" name="name" class="easyui-validatebox" required="true"/></td>
 					</tr>
 					<tr>
-						<td>选择负责人</td>
+						<td id="testclick">选择负责人</td>
 						<td>
-							<input class="easyui-combobox" name="staff.id"  
+							<input id="staffCombo" class="easyui-combobox" name="staff.id"  
     							data-options="valueField:'id',textField:'desc',mode:'remote', delay:500,url:'staff/findByQ.action'" />  
 						</td>
 					</tr>
+						<script type="text/javascript">
+						  $("#testclick").click(function(){
+						      alert('a');
+						      $('#staffCombo').combobox('loadData',{
+				                 'id':'123',
+				                 'desc':'testname'
+					             }
+					            );
+						  });
+						</script>
 					<tr height="300">
 						<td valign="top">关联分区</td>
 						<td>

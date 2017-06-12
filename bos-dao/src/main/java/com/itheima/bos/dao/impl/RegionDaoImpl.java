@@ -6,6 +6,6 @@ import com.itheima.bos.dao.IRegionDao;
 import com.itheima.bos.domain.Region;
 
 @Repository
-public class RegionDao extends BaseDaoImpl<Region> implements IRegionDao {
+public class RegionDaoImpl extends BaseDaoImpl<Region> implements IRegionDao {
 
 }

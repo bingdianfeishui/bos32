@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.itheima.bos.action.base.BaseAction;
 import com.itheima.bos.domain.Staff;
 import com.itheima.bos.service.IStaffService;
-import com.itheima.bos.service.impl.StaffService;
+import com.itheima.bos.service.impl.StaffServiceImpl;
 import com.itheima.bos.utils.BOSUtils;
 import com.itheima.bos.utils.JacksonUtils;
 
@@ -96,13 +96,13 @@ public class StaffAction extends BaseAction<Staff> {
 
     @Action("batchDelete")
     public String batchDelete() throws IOException {
-        batchDeleteOrRestore(ids, StaffService.Operation.DELETE);
+        batchDeleteOrRestore(ids, StaffServiceImpl.Operation.DELETE);
         return NONE;
     }
 
     @Action("batchRestore")
     public String batchRestore() throws IOException {
-        batchDeleteOrRestore(ids, StaffService.Operation.RESTORE);
+        batchDeleteOrRestore(ids, StaffServiceImpl.Operation.RESTORE);
         return NONE;
     }
 
@@ -203,7 +203,7 @@ public class StaffAction extends BaseAction<Staff> {
      * @param op
      * @throws IOException
      */
-    private void batchDeleteOrRestore(String ids, StaffService.Operation op)
+    private void batchDeleteOrRestore(String ids, StaffServiceImpl.Operation op)
             throws IOException {
         String flag = "0";
         try {

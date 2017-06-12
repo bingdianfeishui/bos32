@@ -15,7 +15,7 @@ import com.itheima.bos.utils.PageBean;
 
 @Service
 @Transactional
-public class RegionService implements IRegionService {
+public class RegionServiceImpl implements IRegionService {
 
     @Autowired
     private IRegionDao regionDao;

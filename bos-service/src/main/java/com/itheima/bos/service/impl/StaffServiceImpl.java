@@ -18,7 +18,7 @@ import com.itheima.bos.utils.PageBean;
 
 @Service
 @Transactional
-public class StaffService implements IStaffService {
+public class StaffServiceImpl implements IStaffService {
     public static enum Operation {
         RESTORE, DELETE
     };
@@ -45,7 +45,7 @@ public class StaffService implements IStaffService {
         }
     }
 
-    public void batchDeleteOrRestore(Integer[] ids, StaffService.Operation op)
+    public void batchDeleteOrRestore(Integer[] ids, StaffServiceImpl.Operation op)
             throws Exception {
         if (ids.length > 0) {
             Map<String, Object> map = new HashMap<>();

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
+import com.itheima.bos.domain.DecidedZone;
 import com.itheima.bos.domain.Subarea;
 import com.itheima.bos.utils.PageBean;
 
@@ -26,4 +27,8 @@ public interface ISubareaService {
 
     List<Subarea> listNoDecidedZone();
 
+    void detachToDecidedZone(DecidedZone decidedZone);
+
+    void bindToDecidedZone(DecidedZone decidedZone, Serializable[] subareaIds);
+    
 }

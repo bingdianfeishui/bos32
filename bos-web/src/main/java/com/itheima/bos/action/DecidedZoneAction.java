@@ -79,8 +79,8 @@ public class DecidedZoneAction extends BaseAction<DecidedZone> {
     @Action("edit")
     @Override
     public String edit() throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        decidedZoneService.update(model, subareaId);
+        return NONE;
     }
 
     @Action("pageQuery")

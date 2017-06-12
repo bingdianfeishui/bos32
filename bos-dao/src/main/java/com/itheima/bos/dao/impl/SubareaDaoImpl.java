@@ -6,6 +6,6 @@ import com.itheima.bos.dao.ISubareaDao;
 import com.itheima.bos.domain.Subarea;
 
 @Repository
-public class SubareaDao extends BaseDaoImpl<Subarea> implements ISubareaDao {
+public class SubareaDaoImpl extends BaseDaoImpl<Subarea> implements ISubareaDao {
 
 }

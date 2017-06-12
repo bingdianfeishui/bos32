@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itheima.bos.dao.ISubareaDao;
+import com.itheima.bos.domain.DecidedZone;
 import com.itheima.bos.domain.Subarea;
 import com.itheima.bos.service.ISubareaService;
 import com.itheima.bos.utils.PageBean;
 
 @Service
 @Transactional
-public class SubareaService implements ISubareaService {
+public class SubareaServiceImpl implements ISubareaService {
     @Autowired
     private ISubareaDao subareaDao;
     
@@ -65,6 +66,29 @@ public class SubareaService implements ISubareaService {
         detachedCriteria.add(Restrictions.isNull("decidedZone.id"));
         
         return subareaDao.findListByDetachedCriteria(detachedCriteria);
+    }
+
+    @Override
+    public void detachToDecidedZone(DecidedZone decidedZone) {
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Subarea.class);
+        detachedCriteria.add(Restrictions.eq("decidedZone", decidedZone));
+        List<Subarea> list = subareaDao.findListByDetachedCriteria(detachedCriteria );
+        for (Subarea subarea : list) {
+            subarea.setDecidedZone(null);
+            subareaDao.saveOrUpdate(subarea);
+        }
+    }
+
+    @Override
+    public void bindToDecidedZone(DecidedZone decidedZone,
+            Serializable[] subareaIds) {
+        for (Serializable id : subareaIds) {
+            Subarea sub = subareaDao.findById(id);
+            if(sub!=null){
+                sub.setDecidedZone(decidedZone);
+                subareaDao.saveOrUpdate(sub);
+            }
+        }
     }
 
 }

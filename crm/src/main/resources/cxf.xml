@@ -43,5 +43,8 @@
 		<jaxws:serviceBean>
 			<ref bean="customerService"/>
 		</jaxws:serviceBean>
+		<jaxws:inInterceptors>
+		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+		</jaxws:inInterceptors>
 	</jaxws:server>
 </beans>
