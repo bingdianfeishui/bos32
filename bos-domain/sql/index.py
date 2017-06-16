@@ -68,7 +68,7 @@ with open(os.path.join(root, des_filename),'w') as f:
 			page = section[index]
 			f.write('				<tr>\n')
 			f.write('					<td>'+os.path.split(page)[1].replace('.html','')+'</td>\n')
-			f.write('					<td><a href="'+ page +'" target="view_window">' + page + '</a></td>\n')
+			f.write('					<td><a href="'+ page +'" target="_blank">' + page + '</a></td>\n')
 			f.write('				</tr>\n')
 		f.write('				</tr>\n')
 		
@@ -79,4 +79,4 @@ with open(os.path.join(root, des_filename),'w') as f:
 	f.write('</body>\n')
 	f.write('</html>')
 
-print("生成"+des_filename+"完毕: "+root+des_filename)
+print("生成"+des_filename+"完毕: "+os.path.join(root,des_filename))
