@@ -34,7 +34,27 @@
 		$('#save').click(function(){
 			// 对form 进行校验
 			if($('#noticebillForm').form('validate')){
-				$('#noticebillForm').submit();
+				$('#noticebillForm').form('submit',{
+					 url:"/noticeBill/add.action",
+					 success:function(data){
+					 	//alert(data);
+					 	var title, msg;
+					 	if(data == 1){
+					 		title="Info";
+					 		msg="工单自动分单成功！";
+					 	}else{
+					 		title="Warn";
+					 		msg="工单自动分单失败，请手动分派！";
+					 	}
+				 		$.messager.show({
+							title:title,
+							msg:msg,
+							timeout:2000,
+							showType:'slide'
+						});
+					 }
+				});
+				$('#noticebillForm').form('clear');
 			}
 		});
 	});
@@ -51,7 +71,7 @@
 		</div>
 	</div>
 	<div region="center" style="overflow:auto;padding:5px;" border="false">
-		<form id="noticebillForm" action="noticeBill/add.action" method="post">
+		<form id="noticebillForm">
 			<table class="table-edit" width="100%" align="center">
 				<tr class="title">
 					<td colspan="4">客户信息</td>

@@ -1,5 +1,7 @@
 package com.itheima.bos.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +31,7 @@ public class NoticeBillServiceImpl implements INoticeBillService {
     private IWorkBillDao wordBillDao;
     
     @Override
-    public void save(NoticeBill model) {
+    public int save(NoticeBill model) {
         User user = BOSUtils.getLoginUser();
         model.setUser(user);
         noticeBillDao.save(model);
@@ -54,8 +56,18 @@ public class NoticeBillServiceImpl implements INoticeBillService {
               
               //保存工单
               wordBillDao.save(workBill);
+              
+              return 1;
             }
         }
+    	model.setOrdertype(NoticeBill.ORDERTYPE_MAN);
+    	return 0;
     }
+
+	@Override
+	public List<NoticeBill> findDetachedToWorkBill() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

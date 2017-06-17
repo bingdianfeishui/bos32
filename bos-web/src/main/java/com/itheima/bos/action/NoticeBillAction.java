@@ -1,6 +1,7 @@
 package com.itheima.bos.action;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -33,13 +34,21 @@ public class NoticeBillAction extends BaseAction<NoticeBill> {
         return NONE;
     }
 
+    @Action("findDetachedToWorkBill")
+    public String findDetachedToWorkBill() throws IOException{
+    	List<NoticeBill> list = noticeBillService.findDetachedToWorkBill();
+    	JacksonUtils.init(NoticeBill.class).setIncludeProperties("id","staff","ordertype")
+    		.serializeObj(BOSUtils.getResponse(), list);
+    	return NONE;
+    }
     /**
      * 保存一个业务通知单，并尝试自动分单
      */
     @Action("add")
     @Override
     public String add() throws IOException {
-        noticeBillService.save(model);
+        int res = noticeBillService.save(model);
+        BOSUtils.writeToResponse(String.valueOf(res));
         return null;
     }
 
