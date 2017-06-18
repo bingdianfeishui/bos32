@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.itheima.bos.action.base.BaseAction;
+import com.itheima.bos.domain.DecidedZone;
 import com.itheima.bos.domain.NoticeBill;
 import com.itheima.bos.service.INoticeBillService;
 import com.itheima.bos.utils.BOSUtils;
@@ -34,13 +37,6 @@ public class NoticeBillAction extends BaseAction<NoticeBill> {
         return NONE;
     }
 
-    @Action("findDetachedToWorkBill")
-    public String findDetachedToWorkBill() throws IOException{
-    	List<NoticeBill> list = noticeBillService.findDetachedToWorkBill();
-    	JacksonUtils.init(NoticeBill.class).setIncludeProperties("id","staff","ordertype")
-    		.serializeObj(BOSUtils.getResponse(), list);
-    	return NONE;
-    }
     /**
      * 保存一个业务通知单，并尝试自动分单
      */
@@ -50,6 +46,35 @@ public class NoticeBillAction extends BaseAction<NoticeBill> {
         int res = noticeBillService.save(model);
         BOSUtils.writeToResponse(String.valueOf(res));
         return null;
+    }
+
+    @Action("listNotAssigned")
+    public String listNotAssigned() throws IOException {
+        List<NoticeBill> list = noticeBillService.findNotAssigned();
+        @JsonIgnoreProperties({"user","staff","workBills"})
+        abstract class NoticeBillMixIn {
+            @JsonProperty("noticeBillId")
+            public abstract Integer getId();
+        }
+        JacksonUtils.init(NoticeBill.class)
+                // .setIncludeProperties("id", "customerName", "pickaddress",
+                // "ordertype")
+                .addMixIn(NoticeBillMixIn.class)
+                .serializeObj(BOSUtils.getResponse(), list);
+        return NONE;
+    }
+
+    @Action("manualAssignment")
+    public String manualAssignment() throws IOException {
+        String res = "0";
+        try {
+            noticeBillService.manualAssignment(noticeBillId, decidedZone);
+            res = "1";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        BOSUtils.writeToResponse(res);
+        return NONE;
     }
 
     @Override
@@ -90,6 +115,18 @@ public class NoticeBillAction extends BaseAction<NoticeBill> {
 
     @Autowired
     private INoticeBillService noticeBillService;
+
+    private DecidedZone decidedZone;
+
+    public void setDecidedZone(DecidedZone decidedZone) {
+        this.decidedZone = decidedZone;
+    }
+
+    private Integer[] noticeBillId;
+
+    public void setNoticeBillId(Integer[] noticeBillId) {
+        this.noticeBillId = noticeBillId;
+    }
     // endregion
 
 }

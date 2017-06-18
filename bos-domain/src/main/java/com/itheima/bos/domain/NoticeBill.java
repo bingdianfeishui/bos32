@@ -32,7 +32,7 @@ public class NoticeBill implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private User User;
+    private User user;
     private Staff staff;
     private Integer customerId;
     private String customerName;
@@ -46,7 +46,7 @@ public class NoticeBill implements java.io.Serializable {
     private Double weight;
     private String volume;
     private String remark;
-    private String ordertype;
+    private String ordertype = ORDERTYPE_MAN;
     private Set<WorkBill> workBills = new HashSet<WorkBill>(0);
 
     public static final String ORDERTYPE_AUTO="自动分单";
@@ -59,12 +59,12 @@ public class NoticeBill implements java.io.Serializable {
     }
 
     /** full constructor */
-    public NoticeBill(User User, Staff staff, Integer customerId,
+    public NoticeBill(User user, Staff staff, Integer customerId,
             String customerName, String delegater, String telephone,
             String pickaddress, String arrivecity, String product,
             Date pickdate, Integer num, Double weight, String volume,
             String remark, String ordertype, Set<WorkBill> workBills) {
-        this.User = User;
+        this.user = user;
         this.staff = staff;
         this.customerId = customerId;
         this.customerName = customerName;
@@ -97,11 +97,11 @@ public class NoticeBill implements java.io.Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User getUser() {
-        return this.User;
+        return this.user;
     }
 
-    public void setUser(User User) {
-        this.User = User;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

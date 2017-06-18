@@ -1,9 +1,9 @@
 package com.itheima.bos.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.itheima.bos.domain.DecidedZone;
-import com.itheima.bos.domain.Subarea;
 import com.itheima.bos.utils.PageBean;
 
 public interface IDecidedZoneService {
@@ -21,4 +21,6 @@ public interface IDecidedZoneService {
     void detacheSubarea(DecidedZone decidedZone);
     
     void bindSubareas(DecidedZone decidedZone, Serializable[] subareaIds);
+
+    List<DecidedZone> findByQ(String q);
 }

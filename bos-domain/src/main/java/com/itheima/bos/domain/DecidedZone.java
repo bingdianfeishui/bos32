@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * DecidedZone entity. @author MyEclipse Persistence Tools
@@ -22,76 +23,82 @@ import javax.persistence.Table;
 @Table(name = "bc_decidedzone")
 public class DecidedZone implements java.io.Serializable {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
-	// Fields
+    private static final long serialVersionUID = 1L;
 
-	private Integer id;
-	private Staff staff;
-	private String name;
-	private Set<Subarea> subareas = new HashSet<Subarea>(0);
+    // Fields
 
-	// Constructors
+    private Integer id;
+    private Staff staff;
+    private String name;
+    private Set<Subarea> subareas = new HashSet<Subarea>(0);
 
-	/** default constructor */
-	public DecidedZone() {
-	}
+    // Constructors
 
-	/** minimal constructor */
-	public DecidedZone(Integer id) {
-		this.id = id;
-	}
+    /** default constructor */
+    public DecidedZone() {
+    }
 
-	/** full constructor */
-	public DecidedZone(Integer id, Staff staff, String name,
-			Set<Subarea> subareas) {
-		this.id = id;
-		this.staff = staff;
-		this.name = name;
-		this.subareas = subareas;
-	}
+    /** minimal constructor */
+    public DecidedZone(Integer id) {
+        this.id = id;
+    }
 
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Integer getId() {
-		return this.id;
-	}
+    /** full constructor */
+    public DecidedZone(Integer id, Staff staff, String name,
+            Set<Subarea> subareas) {
+        this.id = id;
+        this.staff = staff;
+        this.name = name;
+        this.subareas = subareas;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Transient
+    public String getDesc() {
+        return "[" + this.name + "](" + this.staff.getName() + " "
+                + this.staff.getTelephone() + ")";
+    }
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "staff_id")
-	public Staff getStaff() {
-		return this.staff;
-	}
+    // Property accessors
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setStaff(Staff staff) {
-		this.staff = staff;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "name", length = 30)
-	public String getName() {
-		return this.name;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "staff_id")
+    public Staff getStaff() {
+        return this.staff;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "decidedZone")
-	public Set<Subarea> getSubareas() {
-		return this.subareas;
-	}
+    @Column(name = "name", length = 30)
+    public String getName() {
+        return this.name;
+    }
 
-	public void setSubareas(Set<Subarea> subareas) {
-		this.subareas = subareas;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "decidedZone")
+    public Set<Subarea> getSubareas() {
+        return this.subareas;
+    }
+
+    public void setSubareas(Set<Subarea> subareas) {
+        this.subareas = subareas;
+    }
 
 }

@@ -32,6 +32,7 @@
 	function doAdd(){
 		if(editIndex != undefined){
 			$("#grid").datagrid('endEdit',editIndex);
+			editIndex = undefined;
 		}
 		if(editIndex==undefined){
 			//alert("快速添加电子单...");
@@ -46,6 +47,7 @@
 	
 	function doSave(){
 		$("#grid").datagrid('endEdit',editIndex );
+
 	}
 	
 	function doCancel(){
@@ -158,20 +160,25 @@
 			pageList: [30,50,100],
 			pagination : true,
 			toolbar : toolbar,
-			url :  "",
+			url :  "/workOrderManage/pageQuery.action",
 			idField : 'id',
 			columns : columns,
 			onDblClickRow : doDblClickRow,
 			onAfterEdit : function(rowIndex, rowData, changes){
 				console.info(rowData);
-				editIndex = undefined;
+				$.post('/workOrderManage/saveOrUpdate.action',rowData,function(data){
+				    //alert(data);
+				});
 			}
 		});
 	});
 
 	function doDblClickRow(rowIndex, rowData){
-		alert("双击表格数据...");
+		//alert("双击表格数据...");
 		console.info(rowIndex);
+		if(editIndex != undefined){
+		  $('#grid').datagrid('endEdit',editIndex);
+		}
 		$('#grid').datagrid('beginEdit',rowIndex);
 		editIndex = rowIndex;
 	}

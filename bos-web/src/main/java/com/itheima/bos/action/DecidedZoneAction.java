@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -36,7 +37,7 @@ public class DecidedZoneAction extends BaseAction<DecidedZone> {
         if (list != null && list.size() > 0) {
             JacksonUtils.init(Customer.class).serializeObj(
                     BOSUtils.getResponse(), list);
-        }else{
+        } else {
             returnBlankJasonObj();
         }
         return NONE;
@@ -49,7 +50,7 @@ public class DecidedZoneAction extends BaseAction<DecidedZone> {
         if (list != null && list.size() > 0) {
             JacksonUtils.init(Customer.class).serializeObj(
                     BOSUtils.getResponse(), list);
-        }else{
+        } else {
             BOSUtils.getResponse().getWriter().write("[]");
         }
         return NONE;
@@ -109,10 +110,21 @@ public class DecidedZoneAction extends BaseAction<DecidedZone> {
         return NONE;
     }
 
+    @Action("findByQ")
     @Override
     public String findByQ() throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        List<DecidedZone> list = new ArrayList<>();
+        if (StringUtils.isBlank(q)) {
+            decidedZoneService.pageQuery(pageBean);
+            list = pageBean.getRows();
+        } else {
+            list = decidedZoneService.findByQ(q);
+        }
+
+        JacksonUtils.init(DecidedZone.class).setIncludeProperties("id", "desc")
+                .serializeObj(BOSUtils.getResponse(), list);
+
+        return NONE;
     }
 
     // endregion actions
@@ -141,8 +153,9 @@ public class DecidedZoneAction extends BaseAction<DecidedZone> {
     }
 
     private Integer[] subareaId;
+
     public void setSubareaId(Integer[] subareaId) {
-		this.subareaId = subareaId;
-	}
+        this.subareaId = subareaId;
+    }
     // endregion private fiedlds and methods
 }

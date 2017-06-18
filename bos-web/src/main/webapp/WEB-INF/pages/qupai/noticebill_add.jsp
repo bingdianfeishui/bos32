@@ -57,6 +57,45 @@
 				$('#noticebillForm').form('clear');
 			}
 		});
+		
+		$('#assignWindow').window({
+            title: '手动分区',
+            width: 600,
+            modal: true,
+            shadow: true,
+            closed: true,
+            height: 400,
+            resizable:false
+        });
+		
+		$('#assign').click(function(){
+            $("#noticeBillGrid").datagrid('reload');
+            $("#decidedZoneCombo").combobox('reload');
+            $("#assignWindow").window('open');
+        });
+        
+        $("#assignBtn").click(function(){
+            $("#assignNoticeBillForm").form('submit',{
+                url:'/noticeBill/manualAssignment.action',
+                success:function(data){
+                    var msg="";
+                    if(data == "1"){
+                        msg="手动分单成功！";
+                        $("#noticeBillGrid").datagrid('reload');
+                        $("#decidedZoneCombo").combobox('clear');
+                    }else{
+                        msg="<font color='red'>手动分单失败！！</font>";
+                    }
+                    
+                    $.messager.show({
+                            title:"分单结果",
+                            msg:msg,
+                            timeout:2000,
+                            showType:'slide'
+                        });
+                }
+            });
+        });
 	});
 </script>
 </head>
@@ -68,6 +107,8 @@
 				plain="true">新单</a>
 			<a id="edit" icon="icon-edit" href="${pageContext.request.contextPath }/page_qupai_noticebill.action" class="easyui-linkbutton"
 				plain="true">工单操作</a>	
+			<a id="assign" icon="icon-edit" href="#" class="easyui-linkbutton"
+				plain="true">手动分单</a>	
 		</div>
 	</div>
 	<div region="center" style="overflow:auto;padding:5px;" border="false">
@@ -146,5 +187,45 @@
 			</table>
 		</form>
 	</div>
+	
+   <div class="easyui-window" id="assignWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
+        <div style="height:31px;overflow:hidden;" split="false" border="false" >
+            <div class="datagrid-toolbar">
+                <a id="assignBtn" icon="icon-save" href="#" class="easyui-linkbutton" plain="true" >保存</a>
+            </div>
+        </div>
+        
+        <div style="overflow:auto;padding:5px;" border="false">
+            <form id="assignNoticeBillForm">
+                <table class="table-edit" width="80%" align="center">
+                    <tr class="title">
+                        <td colspan="2">关联通知单到定区</td>
+                    </tr>
+                    <tr>
+                        <td id="testclick">选择定区</td>
+                        <td>
+                            <input id="decidedZoneCombo" class="easyui-combobox" name="decidedZone.id" 
+                                data-options="valueField:'id',textField:'desc',mode:'remote', delay:500, width:300, url:'/decidedZone/findByQ.action'" />  
+                        </td>
+                    </tr>
+                    <tr height="300">
+                        <td valign="top">分派通知单</td>
+                        <td>
+                            <table id="noticeBillGrid"  class="easyui-datagrid" border="false" style="width:300px;height:300px" data-options="url:'noticeBill/listNotAssigned.action', fitColumns:true,singleSelect:false">
+                                <thead>  
+                                    <tr>  
+                                        <th data-options="field:'noticeBillId',width:30,checkbox:true">编号</th>  
+                                        <th data-options="field:'customerName',width:150">用户名</th>  
+                                        <th data-options="field:'pickaddress',width:200,align:'right'">取件地址</th>  
+                                        <th data-options="field:'ordertype',width:200,align:'right'">分单类型</th>  
+                                    </tr>  
+                                </thead> 
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

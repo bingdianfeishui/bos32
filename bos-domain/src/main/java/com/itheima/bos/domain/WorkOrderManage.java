@@ -78,7 +78,7 @@ public class WorkOrderManage implements java.io.Serializable {
 
     // Property accessors
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+//    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;

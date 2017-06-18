@@ -1,7 +1,10 @@
 package com.itheima.bos.service.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,5 +77,13 @@ public class DecidedZoneServiceImpl implements IDecidedZoneService {
     @Override
     public void bindSubareas(DecidedZone decidedZone, Serializable[] subareaIds) {
         subareaService.bindToDecidedZone(decidedZone, subareaIds);
+    }
+
+    @Override
+    public List<DecidedZone> findByQ(String q) {
+        DetachedCriteria criteria = DetachedCriteria
+                .forClass(DecidedZone.class);
+        criteria.add(Restrictions.like("name", "%" + q + "%"));
+        return decidedZoneDao.findListByDetachedCriteria(criteria);
     }
 }
