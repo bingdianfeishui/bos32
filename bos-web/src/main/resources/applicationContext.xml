@@ -71,4 +71,31 @@
 	<jaxws:client id="crmService"
 		serviceClass="com.itheima.crm.service.ICustomerService" 
 		address="http://localhost:8081/crm/service/customer"></jaxws:client>
+		
+    <!-- shiro -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 安全管理对象 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- url相关 -->
+        <property name="loginUrl" value="/login.jsp"/>
+        <property name="unauthorizedUrl" value="/unautorized.jsp"/>
+        <property name="successUrl" value="/index.jsp"/>
+        <!-- 注入URL拦截规则 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /css/** = anon
+                /js/** = anon
+                /images/** = anon
+                /validatecode.jsp* = anon
+                /login.jsp = anon
+                /userAction_login.action = anon
+                /page_base_staff.action = perms["staff-list"]
+                /* = authc
+            </value>
+        </property>
+    </bean>
+    <bean id="bosrealm" class="com.itheima.bos.realm.BOSRealm"/>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="bosrealm"/>
+    </bean>
 </beans>

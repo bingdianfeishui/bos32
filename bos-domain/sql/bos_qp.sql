@@ -52,7 +52,7 @@ CREATE TABLE qp_workbill
 /*==============================================================*/
 CREATE TABLE qp_workordermanage
 (
-   id                   INT(11) NOT NULL AUTO_INCREMENT,
+   id                   INT(11) NOT NULL,
    arrivecity           VARCHAR(20),
    product              VARCHAR(20),
    num                  INT,
@@ -87,6 +87,6 @@ ALTER TABLE qp_workbill ADD CONSTRAINT FK_workbill_noticebill_fk FOREIGN KEY (no
       REFERENCES qp_noticebill (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
-ALTER TABLE qp_workordermanage AUTO_INCREMENT=10000001;
+--ALTER TABLE qp_workordermanage AUTO_INCREMENT=10000001;
 ALTER TABLE qp_workbill AUTO_INCREMENT=10000001;
 ALTER TABLE qp_noticebill AUTO_INCREMENT=10000001;
