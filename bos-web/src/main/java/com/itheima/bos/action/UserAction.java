@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -36,6 +42,35 @@ public class UserAction extends BaseAction<User> {
         String validateCode = (String) BOSUtils.getSession()
                 .getAttribute("key");
         // TODO:调试阶段屏蔽验证码功能
+        if (StringUtils.isNotBlank(validateCode)
+                && validateCode.equals(checkcode)) {
+            Subject subject = SecurityUtils.getSubject();
+            AuthenticationToken token = new UsernamePasswordToken(model.getUsername(), MD5Utils.md5(model.getPassword()));
+            try {
+                subject.login(token);
+                User user = (User) subject.getPrincipal();
+                BOSUtils.getSession().setAttribute("loginUser", user);
+                return HOME;
+            } catch(UnknownAccountException e){
+                e.printStackTrace();
+                addActionError("用户名不存在！");
+            } catch(IncorrectCredentialsException e){
+                e.printStackTrace();
+                addActionError("密码错误！");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return LOGIN;
+        }
+
+        addActionError("验证码输入错误！");
+        return LOGIN;
+    }
+    
+    public String login_bak() {
+        String validateCode = (String) BOSUtils.getSession()
+                .getAttribute("key");
+        // TODO:调试阶段屏蔽验证码功能
         if (true || StringUtils.isNotBlank(validateCode)
                 && validateCode.equals(checkcode)) {
             User user = userService.login(model);
@@ -47,7 +82,7 @@ public class UserAction extends BaseAction<User> {
                 return LOGIN;
             }
         }
-
+        
         addActionError("验证码输入错误！");
         return LOGIN;
     }
