@@ -8,7 +8,8 @@
 	<!-- 在struts-plugin.xml中已配置 -->
 	<package name="basicStruts" extends="struts-default">
 		<interceptors>
-			<interceptor name="bosLogin" class="com.itheima.bos.interceptor.BOSLoginInterceptor"></interceptor>
+			<interceptor name="bosLogin"
+				class="com.itheima.bos.interceptor.BOSLoginInterceptor"></interceptor>
 			<interceptor-stack name="myDefaultStack">
 				<interceptor-ref name="bosLogin">
 					<param name="excludeMethods">login</param>
@@ -16,13 +17,17 @@
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
-		<default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>		
+		<default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>
 		<global-results>
 			<result name="home" type="redirect">/index.jsp</result>
 			<result name="login">/login.jsp</result>
 			<result name="relogin" type="redirect">/login.jsp</result>
+			<result name="unauthorized">/unauthorized.jsp</result>
 		</global-results>
-		
+		<global-exception-mappings>
+			<exception-mapping result="unauthorized"
+				exception="org.apache.shiro.authz.UnauthorizedException" />
+		</global-exception-mappings>
 		<action name="page_*_*">
 			<result type="dispatcher">/WEB-INF/pages/{1}/{2}.jsp</result>
 		</action>
