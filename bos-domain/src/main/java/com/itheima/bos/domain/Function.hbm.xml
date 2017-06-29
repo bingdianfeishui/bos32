@@ -10,7 +10,7 @@
             <column name="id" length="32" />
             <generator class="uuid"></generator>
         </id>
-        <many-to-one name="parentFunction" class="com.itheima.bos.domain.Function" fetch="select">
+        <many-to-one name="parent" class="com.itheima.bos.domain.Function" fetch="select">
             <column name="pid" length="32" />
         </many-to-one>
         <property name="name" type="java.lang.String">

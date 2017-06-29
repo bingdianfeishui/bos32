@@ -16,7 +16,7 @@ import com.itheima.bos.domain.Staff;
 import com.itheima.bos.service.IStaffService;
 import com.itheima.bos.utils.PageBean;
 
-@Service
+@Service("staffService")
 @Transactional
 public class StaffServiceImpl implements IStaffService {
     public static enum Operation {

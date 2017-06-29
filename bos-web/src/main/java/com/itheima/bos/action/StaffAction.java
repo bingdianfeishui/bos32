@@ -100,7 +100,7 @@ public class StaffAction extends BaseAction<Staff> {
         return NONE;
     }
 
-    @RequiresPermissions("staff-delete")
+    @RequiresPermissions("staff.delete")
     @Action("batchDelete")
     public String batchDelete() throws IOException {
         batchDeleteOrRestore(ids, StaffServiceImpl.Operation.DELETE);
@@ -165,7 +165,7 @@ public class StaffAction extends BaseAction<Staff> {
 
     // region private fiedlds and methods
     public IStaffService staffService;
-    @Autowired(required=true)
+    @Autowired
     public void setStaffService(IStaffService staffService) {
         this.staffService = staffService;
     }

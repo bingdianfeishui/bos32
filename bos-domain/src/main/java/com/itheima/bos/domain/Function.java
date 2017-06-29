@@ -16,7 +16,7 @@ public class Function implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     private String id;
-    private Function parentFunction;
+    private Function parent;
     private String name;
     private String code;
     private String description;
@@ -31,13 +31,14 @@ public class Function implements java.io.Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public Function getParentFunction() {
-        return parentFunction;
-    }
-    public void setParentFunction(Function parentFunction) {
-        this.parentFunction = parentFunction;
-    }
-    public String getName() {
+    
+    public Function getParent() {
+		return parent;
+	}
+	public void setParent(Function parent) {
+		this.parent = parent;
+	}
+	public String getName() {
         return name;
     }
     public void setName(String name) {
