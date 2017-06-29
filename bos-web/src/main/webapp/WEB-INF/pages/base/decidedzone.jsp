@@ -76,7 +76,7 @@
     		//获取未关联的客户
     		$.ajax({
                 type:"POST",
-                url:'decidedZone/listCustomersNotAssociated.action',
+                url:'${pageContext.request.contextPath }/decidedZone/listCustomersNotAssociated.action',
                 error:function(){
                     alertServerError();
                 },
@@ -90,7 +90,7 @@
     		//获取已关联到该定区的客户
     		$.ajax({
                 type:"POST",
-                url:'decidedZone/listCustomersAssociatedById.action',
+                url:'${pageContext.request.contextPath }/decidedZone/listCustomersAssociatedById.action',
                 data:{"id":rows[0].id},
                 dataType:'json',
                 error:function(){
@@ -183,7 +183,7 @@
 			pageList: [30,50,100],
 			pagination : true,
 			toolbar : toolbar,
-			url : "decidedZone/pageQuery.action",
+			url : "${pageContext.request.contextPath }/decidedZone/pageQuery.action",
 			idField : 'id',
 			columns : columns,
 			onDblClickRow : doDblClickRow
@@ -216,9 +216,9 @@
 		$("#save").click(function(){
 			var r = $("#addDecidedZoneForm").form('validate');
 			if(r){
-			    var action = 'decidedZone/add.action';
+			    var action = '${pageContext.request.contextPath }/decidedZone/add.action';
 			    if($("#addDecidedZoneForm input[name='id']").val() != "")
-			         action = 'decidedZone/edit.action';
+			         action = '${pageContext.request.contextPath }/decidedZone/edit.action';
 			   
 				$.ajax({
 					type: 'POST',
@@ -255,7 +255,7 @@
 			//$("#customerForm").form('submit');
 			$.ajax({
 				type: 'POST',
-				url: 'decidedZone/associateCustomers.action',
+				url: '${pageContext.request.contextPath }/decidedZone/associateCustomers.action',
 				data:$("#customerForm").serialize(),
 				error: function(res){
 					alertServerError();
@@ -281,7 +281,7 @@
 			border : true,
 			rownumbers : true,
 			striped : true,
-			url : "subarea/findListByDecidedZoneId.action?decidedZoneId=" + row.id,
+			url : "${pageContext.request.contextPath }/subarea/findListByDecidedZoneId.action?decidedZoneId=" + row.id,
 			columns : [ [{
 				field : 'id',
 				title : '分拣编号',
@@ -343,7 +343,7 @@
 			border : true,
 			rownumbers : true,
 			striped : true,
-			url : "decidedZone/listCustomersAssociatedById.action?id=" + row.id,
+			url : "${pageContext.request.contextPath }/decidedZone/listCustomersAssociatedById.action?id=" + row.id,
 			columns : [[{
 				field : 'id',
 				title : '客户编号',
@@ -405,7 +405,7 @@
 						<td id="testclick">选择负责人</td>
 						<td>
 							<input id="staffCombo" class="easyui-combobox" name="staff.id"  
-    							data-options="valueField:'id',textField:'desc',mode:'remote', delay:500,url:'staff/findByQ.action'" />  
+    							data-options="valueField:'id',textField:'desc',mode:'remote', delay:500,url:'${pageContext.request.contextPath }/staff/findByQ.action'" />  
 						</td>
 					</tr>
 						<script type="text/javascript">
@@ -421,7 +421,7 @@
 					<tr height="300">
 						<td valign="top">关联分区</td>
 						<td>
-							<table id="subareaGrid"  class="easyui-datagrid" border="false" style="width:300px;height:300px" data-options="url:'subarea/listNoDecidedZone.action',fitColumns:true,singleSelect:false">
+							<table id="subareaGrid"  class="easyui-datagrid" border="false" style="width:300px;height:300px" data-options="url:'${pageContext.request.contextPath }/subarea/listNoDecidedZone.action',fitColumns:true,singleSelect:false">
 								<thead>  
 							        <tr>  
 							            <th data-options="field:'subareaId',width:30,checkbox:true">编号</th>  

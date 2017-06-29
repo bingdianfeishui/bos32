@@ -25,6 +25,18 @@ public class Function implements java.io.Serializable {
     private Integer zindex;
     private Set<Function> children = new HashSet<>(0);
     private Set<Function> roles = new HashSet<>(0);
+    
+    public String getpId(){
+        if(parent == null){
+            return "0";
+        }
+        return parent.getId();
+    }
+    
+    public String getText(){
+        return name;
+    }
+    
     public String getId() {
         return id;
     }

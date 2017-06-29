@@ -20,7 +20,7 @@ public class Role implements java.io.Serializable {
     private String code;
     private String description;
     private Set<Role> users = new HashSet<>(0);
-    private Set<Role> functions = new HashSet<>(0);
+    private Set<Function> functions = new HashSet<>(0);
     
     public String getId() {
         return id;
@@ -52,10 +52,10 @@ public class Role implements java.io.Serializable {
     public void setUsers(Set<Role> users) {
         this.users = users;
     }
-    public Set<Role> getFunctions() {
+    public Set<Function> getFunctions() {
         return functions;
     }
-    public void setFunctions(Set<Role> functions) {
+    public void setFunctions(Set<Function> functions) {
         this.functions = functions;
     }
     public static long getSerialversionuid() {

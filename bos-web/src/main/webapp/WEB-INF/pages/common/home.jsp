@@ -30,25 +30,25 @@
 			title : '公共栏',
 			height : 255,
 			collapsible : true,
-			href:'page_portal_gonggao.action'
+			href:'${pageContext.request.contextPath }/page_portal_gonggao.action'
 		}, {
 			id : 'p2',
 			title : '代办事宜',
 			height : 255,
 			collapsible : true,
-			href:'page_portal_daiban.action'
+			href:'${pageContext.request.contextPath }/page_portal_daiban.action'
 		}, {
 			id : 'p3',
 			title : '预警信息',
 			height : 255,
 			collapsible : true,
-			href:'page_portal_yujing.action'
+			href:'${pageContext.request.contextPath }/page_portal_yujing.action'
 		}, {
 			id : 'p4',
 			title : '系统BUG反馈',
 			height : 255,
 			collapsible : true,
-			href:'page_portal_bug.action'
+			href:'${pageContext.request.contextPath }/page_portal_bug.action'
 		}];
 		 $('#layout_portal_portal').portal({
 			border : false,

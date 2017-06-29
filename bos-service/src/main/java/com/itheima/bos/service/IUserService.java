@@ -1,6 +1,7 @@
 package com.itheima.bos.service;
 
 import com.itheima.bos.domain.User;
+import com.itheima.bos.utils.PageBean;
 
 public interface IUserService {
 
@@ -17,4 +18,13 @@ public interface IUserService {
 	 */
     void updatePassword(User user);
 
+    void pageQuery(PageBean<User> pageBean);
+
+    void save(User user, String[] roleIds);
+    
+    void update(User user);
+    
+    void delete(User user);
+
+    void save(User user);
 }

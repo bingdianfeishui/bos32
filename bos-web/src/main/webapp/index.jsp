@@ -7,6 +7,6 @@
 <title>跳转到主页</title>
 </head>
 <body>
-<jsp:forward page="/page_common_index.action"></jsp:forward>
+<jsp:forward page="${pageContext.request.contextPath }/page_common_index.action"></jsp:forward>
 </body>
 </html>

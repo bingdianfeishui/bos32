@@ -30,8 +30,23 @@
 	$(function(){
 		$("body").css({visibility:"visible"});
 		$('#save').click(function(){
-			$('#form').submit();
+			var ret = $("#userForm").form('validate');
+			if(ret){
+				$('#userForm').submit();
+			}
 		});
+		
+		$.post('/role/listAjax.action', function(data){
+			$("#roleTd").html("");
+			for(var i = 0; i<data.length; i++){
+			    var id = data[i].id;
+			    var name=data[i].name;
+				$("#roleTd").append("<input type='checkbox' id='"+
+					id+"' name='roleIds' value="+id+"><label for='"+
+					id+"'>"+name+"</label></input>");
+			}
+		});
+		
 	});
 </script>	
 </head>
@@ -42,7 +57,7 @@
 		</div>
 	</div>
     <div region="center" style="overflow:auto;padding:5px;" border="false">
-       <form id="form" method="post" >
+       <form id="userForm" method="post" action="${pageContext.request.contextPath }/user/add.action" >
            <table class="table-edit"  width="95%" align="center">
            		<tr class="title"><td colspan="4">基本信息</td></tr>
 	           	<tr><td>用户名:</td><td><input type="text" name="username" id="username" class="easyui-validatebox" required="true" /></td>
@@ -53,8 +68,8 @@
 	           	<tr><td>性别:</td><td>
 	           		<select name="gender" id="gender" class="easyui-combobox" style="width: 150px;">
 	           			<option value="">请选择</option>
-	           			<option value="男">男</option>
-	           			<option value="女">女</option>
+	           			<option value="1">男</option>
+	           			<option value="0">女</option>
 	           		</select>
 	           	</td>
 					<td>单位:</td><td>
@@ -74,6 +89,11 @@
 					</td>
 				</tr>
 	           	<tr><td>备注:</td><td colspan="3"><textarea style="width:80%"></textarea></td></tr>
+	           	<tr>
+	           	   <td>选择角色:</td>
+	           	       <td colspan="3" id="roleTd">
+	           	       </td>
+       	        </tr>
            </table>
        </form>
 	</div>

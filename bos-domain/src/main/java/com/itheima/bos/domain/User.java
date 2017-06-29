@@ -1,8 +1,13 @@
 package com.itheima.bos.domain;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * User entity. @author MyEclipse Persistence Tools
@@ -12,6 +17,10 @@ public class User implements java.io.Serializable {
 
     // Fields
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private String id;
     private String username;
     private String password;
@@ -21,9 +30,8 @@ public class User implements java.io.Serializable {
     private String station;
     private String telephone;
     private String remark;
-    private Set roles = new HashSet(0);
-    private Set noticeBills = new HashSet(0);
-    private Set noticeBills_1 = new HashSet(0);
+    private Set<Role> roles = new HashSet<>(0);
+    private Set<NoticeBill> noticeBills = new HashSet<>(0);
 
     // Constructors
 
@@ -41,7 +49,7 @@ public class User implements java.io.Serializable {
     /** full constructor */
     public User(String id, String username, String password, Double salary,
             Date birthday, String gender, String station, String telephone,
-            String remark, Set roles, Set noticeBills, Set noticeBills_1) {
+            String remark, Set roles, Set noticeBills) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -53,9 +61,20 @@ public class User implements java.io.Serializable {
         this.remark = remark;
         this.roles = roles;
         this.noticeBills = noticeBills;
-        this.noticeBills_1 = noticeBills_1;
     }
 
+    public String getRoleNames() {
+        List<String> list = new ArrayList<String>();
+        for (Role role : roles) {
+            list.add(role.getName());
+        }
+        return StringUtils.join(list.toArray(), ", ");
+    }
+
+    public String getBirthdayStr(){
+        if(birthday == null) return "无数据";
+        return new SimpleDateFormat("yyyy-MM-dd").format(birthday);
+    }
     // Property accessors
 
     public String getId() {
@@ -144,14 +163,6 @@ public class User implements java.io.Serializable {
 
     public void setNoticeBills(Set noticeBills) {
         this.noticeBills = noticeBills;
-    }
-
-    public Set getNoticeBills_1() {
-        return this.noticeBills_1;
-    }
-
-    public void setNoticeBills_1(Set noticeBills_1) {
-        this.noticeBills_1 = noticeBills_1;
     }
 
 }

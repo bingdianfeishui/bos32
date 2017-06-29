@@ -91,7 +91,7 @@
 				/validatecode.jsp* = anon
 				/login.jsp = anon
 				/userAction_login.action = anon
-				/page_base_staff.action = perms["staff-list"]
+				/page_base_staff.action = perms["staff.list"]
 				/* = authc
 			</value>
 		</property>
@@ -100,6 +100,7 @@
 	<!-- 注册安全管理器对象 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="bosRealm" />
+		<property name="cacheManager" ref="cacheManager"></property>
 	</bean>
 
 	<!-- 注册realm -->
@@ -116,4 +117,9 @@
 	<!-- 配置shiro框架提供的切面类，用于创建代理对象 -->
 	<bean
 		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor" />
+		
+	<!-- Shiro缓存管理器 -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+	   <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+	</bean>
 </beans>

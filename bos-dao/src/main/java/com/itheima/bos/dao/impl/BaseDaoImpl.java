@@ -55,7 +55,8 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return this.getHibernateTemplate().get(entityClass, id);
 	}
 
-	public List<T> findAll() {
+	@SuppressWarnings("unchecked")
+    public List<T> findAll() {
 		String hql = "FROM " + entityClass.getSimpleName();
 		return (List<T>) this.getHibernateTemplate().find(hql);
 	}

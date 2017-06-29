@@ -51,7 +51,7 @@
 		};
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/json/menu.json',
+			url : '${pageContext.request.contextPath}/function/listAjax.action',
 			type : 'POST',
 			dataType : 'text',
 			success : function(data) {
@@ -59,7 +59,7 @@
 				$.fn.zTree.init($("#functionTree"), setting, zNodes);
 			},
 			error : function(msg) {
-				alert('树加载异常!');
+				alert('权限树加载异常!');
 			}
 		});
 		
@@ -67,7 +67,24 @@
 		
 		// 点击保存
 		$('#save').click(function(){
-			location.href='${pageContext.request.contextPath}/page_admin_privilege.action';
+			var ret = $("#roleForm").form("validate");
+			if(ret){
+				var nodes = $.fn.zTree.getZTreeObj("functionTree").getCheckedNodes(true);
+				if(nodes.length == 0){
+				    $.messager.confirm('警告', '您没有为该角色选择任何权限！确定继续吗？', function(r){
+					    if (!r){
+			                return false;
+					    }
+					});
+				}
+				var ids  = new Array();
+                for(var i = 0; i < nodes.length; i++){
+                     ids.push(nodes[i].id);
+                }
+                var functionIds = ids.join(',');
+                $("input[name=functionIds]").val(functionIds);
+                $("#roleForm").submit();
+			}
 		});
 	});
 </script>	
@@ -79,15 +96,16 @@
 			</div>
 		</div>
 		<div region="center" style="overflow:auto;padding:5px;" border="false">
-			<form id="roleForm" method="post">
+			<form id="roleForm" method="post" action="${pageContext.request.contextPath}/role/add.action">
+				<input type="hidden" name="functionIds"/>
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">角色信息</td>
 					</tr>
 					<tr>
-						<td width="200">编号</td>
+						<td width="200">关键字</td>
 						<td>
-							<input type="text" name="id" class="easyui-validatebox" data-options="required:true" />						
+							<input type="text" name="code" class="easyui-validatebox" data-options="required:true" />						
 						</td>
 					</tr>
 					<tr>

@@ -11,6 +11,7 @@ import org.apache.struts2.ServletActionContext;
 import com.itheima.bos.domain.User;
 
 public class BOSUtils {
+    public static final String ADMIN_USERNAME = "admin";
     private BOSUtils(){}
 	public static HttpSession getSession(){
 		return ServletActionContext.getRequest().getSession();

@@ -14,6 +14,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ import com.itheima.bos.utils.MD5Utils;
 @Scope("prototype")
 @Namespace("/user")
 @ParentPackage("basicStruts")
+@Results({@Result(name="list", location="/WEB-INF/pages/admin/userlist.jsp")})
 public class UserAction extends BaseAction<User> {
 
     private static final long serialVersionUID = 8815472318245773723L;
@@ -120,35 +122,36 @@ public class UserAction extends BaseAction<User> {
         return NONE;
     }
 
-//    @Action("pageQuery")
+    @Action("pageQuery")
     @Override
     public String pageQuery() throws IOException {
-        // TODO Auto-generated method stub
+        userService.pageQuery(pageBean);
+        java2Json(pageBean, new String[]{"detachedCriteria", "roles","noticeBills"});
         return NONE;
     }
 
-//    @Action("add")
+    @Action("add")
     @Override
     public String add() throws IOException {
-        // TODO Auto-generated method stub
-        return NONE;
+        userService.save(model, roleIds);
+        return LIST;
     }
 
-//    @Action("delete")
+    @Action("delete")
     @Override
     public String delete() throws IOException {
         // TODO Auto-generated method stub
         return NONE;
     }
 
-//    @Action("edit")
+    @Action("edit")
     @Override
     public String edit() throws IOException {
         // TODO Auto-generated method stub
         return NONE;
     }
 
-//    @Action("findByQ")
+    @Action("findByQ")
     @Override
     public String findByQ() throws IOException {
         // TODO Auto-generated method stub
@@ -168,6 +171,11 @@ public class UserAction extends BaseAction<User> {
         this.checkcode = checkcode;
     }
 
+    private String[] roleIds;
+    public void setRoleIds(String[] roleIds) {
+        this.roleIds = roleIds;
+    }
+    
     // 密码验证规则正则表达式
     private final static String PASSWORD_REGEX = "^(?=.{4,10}$)(?![0-9]+$)[0-9a-zA-Z_]+$";
     // endregion private fields methods

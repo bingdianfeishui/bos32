@@ -44,8 +44,12 @@
 			url : '${pageContext.request.contextPath}/function/pageQuery.action',
 			columns : [[
 			  {
-				  field : 'id',
-				  title : '编号',
+			     field: 'id',
+			     checkbox: true
+			  },
+			  {
+				  field : 'code',
+				  title : '关键字',
 				  width : 200
 			  },
 			  {

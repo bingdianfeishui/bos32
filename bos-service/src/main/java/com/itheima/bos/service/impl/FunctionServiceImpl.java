@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itheima.bos.dao.IFunctionDao;
 import com.itheima.bos.domain.Function;
+import com.itheima.bos.domain.User;
 import com.itheima.bos.service.IFunctionService;
 import com.itheima.bos.utils.PageBean;
 
@@ -29,8 +30,7 @@ public class FunctionServiceImpl implements IFunctionService {
 
 	@Override
 	public void pageQuery(PageBean<Function> pageBean) {
-		// TODO Auto-generated method stub
-
+		functionDao.pageQuery(pageBean);
 	}
 
 	@Override
@@ -49,5 +49,16 @@ public class FunctionServiceImpl implements IFunctionService {
 	public List<Function> findAll() {
 		return functionDao.findAll();
 	}
+
+    @Override
+    public List<Function> findAllMenuFunction() {
+       return functionDao.findAllMenuFunction();
+       
+    }
+
+    @Override
+    public List<Function> findMenuFuncitonByUser(User user) {
+        return functionDao.findMenuFuncitonByUser(user);
+    }
 
 }

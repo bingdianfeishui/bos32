@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.itheima.bos.domain.Function;
+import com.itheima.bos.domain.User;
 import com.itheima.bos.utils.PageBean;
 
 public interface IFunctionService {
@@ -16,4 +17,8 @@ public interface IFunctionService {
 	Function findById(Serializable id);
 
 	List<Function> findAll();
+
+    List<Function> findAllMenuFunction();
+
+    List<Function> findMenuFuncitonByUser(User user);
 }

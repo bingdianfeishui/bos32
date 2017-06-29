@@ -3,7 +3,14 @@ package com.itheima.bos.action.base;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+
+import org.apache.struts2.ServletActionContext;
 
 import com.itheima.bos.utils.BOSUtils;
 import com.itheima.bos.utils.PageBean;
@@ -91,6 +98,42 @@ public abstract class BaseAction<T> extends ActionSupport implements
     protected void returnBlankJasonObj(){
         try {
             BOSUtils.getResponse().getWriter().write("{}");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 将指定Java对象转为json，并响应到客户端页面
+     * @param o
+     * @param exclueds
+     */
+    public void java2Json(Object o ,String[] exclueds){
+        JsonConfig jsonConfig = new JsonConfig();
+        //指定哪些属性不需要转json
+        jsonConfig.setExcludes(exclueds);
+        String json = JSONObject.fromObject(o,jsonConfig).toString();
+        ServletActionContext.getResponse().setContentType("text/json;charset=utf-8");
+        try {
+            ServletActionContext.getResponse().getWriter().print(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 将指定Java对象转为json，并响应到客户端页面
+     * @param o
+     * @param exclueds
+     */
+    public void java2Json(@SuppressWarnings("rawtypes") List o ,String[] exclueds){
+        JsonConfig jsonConfig = new JsonConfig();
+        //指定哪些属性不需要转json
+        jsonConfig.setExcludes(exclueds);
+        String json = JSONArray.fromObject(o,jsonConfig).toString();
+        ServletActionContext.getResponse().setContentType("text/json;charset=utf-8");
+        try {
+            ServletActionContext.getResponse().getWriter().print(json);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -31,7 +31,7 @@
         <property name="zindex" type="java.lang.Integer">
             <column name="zindex" />
         </property>
-        <set name="children" inverse="true">
+        <set name="children" lazy="false" inverse="true">
             <key>
                 <column name="pid" length="32" />
             </key>
