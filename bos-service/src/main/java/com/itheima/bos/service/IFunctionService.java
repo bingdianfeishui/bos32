@@ -21,4 +21,6 @@ public interface IFunctionService {
     List<Function> findAllMenuFunction();
 
     List<Function> findMenuFuncitonByUser(User user);
+
+	void saveOrUpdate(Function function);
 }

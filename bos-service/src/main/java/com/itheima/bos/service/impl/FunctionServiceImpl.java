@@ -61,4 +61,11 @@ public class FunctionServiceImpl implements IFunctionService {
         return functionDao.findMenuFuncitonByUser(user);
     }
 
+	@Override
+	public void saveOrUpdate(Function function) {
+		if(function.getParent()!=null && StringUtils.isBlank(function.getParent().getId()))
+			function.setParent(null);
+		functionDao.saveOrUpdate(function);
+	}
+
 }

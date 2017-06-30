@@ -42,4 +42,9 @@ public class RoleServiceImpl implements IRoleService {
         return roleDao.findAll();
     }
 
+	@Override
+	public void saveOrUpdate(Role role) {
+		roleDao.saveOrUpdate(role);
+	}
+
 }

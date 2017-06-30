@@ -43,7 +43,7 @@ public class UserAction extends BaseAction<User> {
     public String login() {
         String validateCode = (String) BOSUtils.getSession()
                 .getAttribute("key");
-        // TODO:调试阶段屏蔽验证码功能
+
         if (StringUtils.isNotBlank(validateCode)
                 && validateCode.equals(checkcode)) {
             Subject subject = SecurityUtils.getSubject();
@@ -72,8 +72,8 @@ public class UserAction extends BaseAction<User> {
     public String login_bak() {
         String validateCode = (String) BOSUtils.getSession()
                 .getAttribute("key");
-        // TODO:调试阶段屏蔽验证码功能
-        if (true || StringUtils.isNotBlank(validateCode)
+
+        if (StringUtils.isNotBlank(validateCode)
                 && validateCode.equals(checkcode)) {
             User user = userService.login(model);
             if (user != null) {
@@ -122,6 +122,12 @@ public class UserAction extends BaseAction<User> {
         return NONE;
     }
 
+    @Action("updateRoles")
+    public String updateRoles() throws IOException {
+    	
+		return NONE;
+    }
+    
     @Action("pageQuery")
     @Override
     public String pageQuery() throws IOException {

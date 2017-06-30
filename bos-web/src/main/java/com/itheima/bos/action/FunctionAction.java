@@ -65,10 +65,11 @@ public class FunctionAction extends BaseAction<Function> {
         return null;
     }
 
+    @Action("edit")
     @Override
     public String edit() throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    	functionService.saveOrUpdate(model);
+        return NONE;
     }
 
     @Override

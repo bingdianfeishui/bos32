@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -18,8 +15,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.itheima.bos.action.base.BaseAction;
@@ -86,8 +81,6 @@ public class StaffAction extends BaseAction<Staff> {
                 criteria.add(Restrictions.eq("deltag", model.getDeltag()));
             }
         }
-        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-        IStaffService bean = context.getBean(IStaffService.class);
         // 查询
         staffService.pageQuery(pageBean);
 

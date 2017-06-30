@@ -45,9 +45,11 @@ public class RoleAction extends BaseAction<Role> {
         return null;
     }
 
+    @Action("edit")
     @Override
     public String edit() throws IOException {
-        return null;
+    	roleService.saveOrUpdate(model);
+        return NONE;
     }
 
     @Action("pageQuery")
@@ -61,7 +63,7 @@ public class RoleAction extends BaseAction<Role> {
     @Override
     public String findByQ() throws IOException {
         // TODO Auto-generated method stub
-        return null;
+        return NONE;
     }
     //endregion actions
     
