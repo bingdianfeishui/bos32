@@ -1,6 +1,9 @@
 package com.itheima.bos.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +23,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.itheima.bos.action.base.BaseAction;
+import com.itheima.bos.domain.Role;
 import com.itheima.bos.domain.User;
 import com.itheima.bos.service.IUserService;
 import com.itheima.bos.utils.BOSUtils;
@@ -153,7 +157,7 @@ public class UserAction extends BaseAction<User> {
     @Action("edit")
     @Override
     public String edit() throws IOException {
-        // TODO Auto-generated method stub
+        userService.saveOrUpdate(model, roleIds);
         return NONE;
     }
 
@@ -164,6 +168,16 @@ public class UserAction extends BaseAction<User> {
         return NONE;
     }
 
+    @Action("getRoles")
+    public String getRoles() throws IOException {
+        Set<Role> roles = userService.findById(BOSUtils.getLoginUser().getId()).getRoles();
+        List<String> list = new ArrayList<String>();
+        for (Role role : roles) {
+            list.add(role.getId());
+        }
+        java2Json(list, new String[]{"users","functions"});
+        return NONE;
+    }
     // endregion actions
 
     // region private fields methods

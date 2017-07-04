@@ -24,7 +24,7 @@ public class Function implements java.io.Serializable {
     private String generatemenu;
     private Integer zindex;
     private Set<Function> children = new HashSet<>(0);
-    private Set<Function> roles = new HashSet<>(0);
+    private Set<Role> roles = new HashSet<>(0);
     
     public String getpId(){
         if(parent == null){
@@ -92,10 +92,10 @@ public class Function implements java.io.Serializable {
     public void setChildren(Set<Function> children) {
         this.children = children;
     }
-    public Set<Function> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
-    public void setRoles(Set<Function> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

@@ -43,8 +43,15 @@ public class RoleServiceImpl implements IRoleService {
     }
 
 	@Override
-	public void saveOrUpdate(Role role) {
+	public void saveOrUpdate(Role role, String[] functionIds) {
 		roleDao.saveOrUpdate(role);
+		for (String fid : functionIds) {
+            if (StringUtils.isNotBlank(fid)) {
+                Function function = new Function();
+                function.setId(fid);
+                role.getFunctions().add(function);
+            }
+        }
 	}
 
 }

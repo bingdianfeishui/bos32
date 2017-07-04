@@ -48,7 +48,8 @@ public class RoleAction extends BaseAction<Role> {
     @Action("edit")
     @Override
     public String edit() throws IOException {
-    	roleService.saveOrUpdate(model);
+        String[] ids = functionIds.split(",");
+    	roleService.saveOrUpdate(model, ids);
         return NONE;
     }
 
@@ -56,7 +57,7 @@ public class RoleAction extends BaseAction<Role> {
     @Override
     public String pageQuery() throws IOException {
         roleService.pageQuery(pageBean);
-        java2Json(pageBean, new String[]{"detachedCriteria","users","functions"});
+        java2Json(pageBean, new String[]{"detachedCriteria","users","children", "roles", "parent"});
         return NONE;
     }
 

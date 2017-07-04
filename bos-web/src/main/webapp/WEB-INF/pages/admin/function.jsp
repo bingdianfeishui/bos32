@@ -133,7 +133,7 @@
 	                    if(response != "[]")
 	                       $.messager.alert('错误', response, 'error');
 	                    else{
-	                       $('#editStaffWindow').window("close");
+	                       $('#editFunctionWindow').window("close");
 	                       $("#grid").datagrid("reload");
 	                       //parent.$('#tabs').tabs('getSelected').panel('refresh');
 	                    }
@@ -150,7 +150,6 @@
 	<table id="grid"></table>
 </div>
 <div class="easyui-window" title="对功能权限进行修改" id="editFunctionWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
-<!-- div class="easyui-window" title="对功能权限进行修改" id="editFunctionWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px" -->
 	<div style="height:31px;overflow:hidden;" split="false" border="false" >
 		<div class="datagrid-toolbar">
 			<a id="editFunction" icon="icon-save" href="#" class="easyui-linkbutton" plain="true" >保存</a>

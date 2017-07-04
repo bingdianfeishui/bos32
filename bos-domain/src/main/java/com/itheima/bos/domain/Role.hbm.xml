@@ -27,7 +27,7 @@
                 <column name="user_id" length="32" not-null="true" />
             </many-to-many>
         </set>
-        <set name="functions" table="role_function">
+        <set name="functions" lazy="false" table="role_function">
             <key>
                 <column name="role_id" length="32" not-null="true" />
             </key>

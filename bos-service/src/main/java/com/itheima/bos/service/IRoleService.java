@@ -9,5 +9,5 @@ public interface IRoleService {
     void save(Role role, String[] funcitonIds);
     void pageQuery(PageBean<Role> pageBean);
     List<Role> findAll();
-	void saveOrUpdate(Role role);
+	void saveOrUpdate(Role role, String[] ids);
 }

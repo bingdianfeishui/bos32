@@ -43,7 +43,12 @@
 		text : '删除',
 		iconCls : 'icon-cancel',
 		handler : doDelete
-	}];
+	}, {
+        id : 'button-updateRoles',
+        text : '编辑角色',
+        iconCls : 'icon-edit',
+        handler : doEdit
+    }];
 	//定义冻结列
 	var frozenColumns = [ [ {
 		field : 'id',
@@ -122,6 +127,15 @@
 		
 		$("body").css({visibility:"visible"});
 		
+        $("#editUserWindow").window({
+            title: '编辑用户',
+            width: 600,
+            modal: true,
+            shadow: true,
+            closed: true,
+            height: 600,
+            resizable:false
+        });
 	});
 	// 双击
 	function doDblClickRow(rowIndex, rowData) {
@@ -133,13 +147,58 @@
 
 	}
 	
+	var roleIds = new Array();
+	
+	function doEdit(){
+	       var rows = $("#grid").datagrid("getSelections");
+	       if(rows.length == 0){
+	           alert("请选择要编辑的行");
+	           return false;
+	       }
+	       
+          $.post("user/getRoles.action", function(data){
+              for(var i = 0; i < data.length; i++){
+                 roleIds.push(data[i].id);
+              }
+		       $.ajax({
+	                url : '${pageContext.request.contextPath}/role/listAjax.action',
+	                type : 'POST',
+	                dataType : 'text',
+	                success : function(data) {
+	                    data = eval("("+data+")")
+	                    
+	                    $("#roleTd").html("");
+			            for(var i = 0; i<data.length; i++){
+			                var id = data[i].id;
+			                var name=data[i].name;
+			                var checkStatus = "";
+			                if($.inArray(id, roleIds) != -1){
+			                  checkStatus = "checked='checked'";
+			                }
+			                $("#roleTd").append("<input type='checkbox' id='"+
+			                    id+"' name='roleIds' value='"+id+"' "+ checkStatus+"><label for='"+
+			                    id+"'>"+name+"</label></input>");
+			            }
+	                },
+	                error : function(msg) {
+	                    alert('角色信息加载异常!');
+	                }
+	            });
+           });
+           $('#userForm').form('load', rows[0]);
+           
+           //$(".easyui-combotree").combotree('setValue', row.pId);
+           $('#editUserWindow').window("open");
+	       
+	}
+	
 	function doAdd() {
 		//alert("添加用户");
 		location.href="${pageContext.request.contextPath}/page_admin_userinfo.action";
 	}
 
 	function doView() {
-		alert("编辑用户");
+		
 		var item = $('#grid').datagrid('getSelected');
 		console.info(item);
 		//window.location.href = "edit.html";
@@ -165,5 +224,53 @@
     <div region="center" border="false">
     	<table id="grid"></table>
 	</div>
+   <div class="easyui-window" title="更新用户" id="editUserWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
+        <div style="height:31px;overflow:hidden;" split="false" border="false" >
+            <div class="datagrid-toolbar">
+                <a id="editRole" icon="icon-save" href="#" class="easyui-linkbutton" plain="true" >保存</a>
+            </div>
+        </div>
+	    <div style="overflow:auto;padding:5px;" border="false">
+	       <form id="userForm" >
+	           <table class="table-edit"  width="95%" align="center">
+	                <tr class="title"><td colspan="4">基本信息</td></tr>
+	                <tr><td>用户名:</td><td><input type="text" name="username" id="username" class="easyui-validatebox" required="true" /></td>
+	                    <td>口令:</td><td><input type="password" name="password" id="password" class="easyui-validatebox" required="true" validType="minLength[5]" /></td></tr>
+	                <tr class="title"><td colspan="4">其他信息</td></tr>
+	                <tr><td>工资:</td><td><input type="text" name="salary" id="salary" class="easyui-numberbox" /></td>
+	                    <td>生日:</td><td><input type="text" name="birthday" id="birthday" class="easyui-datebox" /></td></tr>
+	                <tr><td>性别:</td><td>
+	                    <select name="gender" id="gender" class="easyui-combobox" style="width: 150px;">
+	                        <option value="">请选择</option>
+	                        <option value="1">男</option>
+	                        <option value="0">女</option>
+	                    </select>
+	                </td>
+	                    <td>单位:</td><td>
+	                    <select name="station" id="station" class="easyui-combobox" style="width: 150px;">
+	                        <option value="">请选择</option>
+	                        <option value="总公司">总公司</option>
+	                        <option value="分公司">分公司</option>
+	                        <option value="厅点">厅点</option>
+	                        <option value="基地运转中心">基地运转中心</option>
+	                        <option value="营业所">营业所</option>
+	                    </select>
+	                </td></tr>
+	                <tr>
+	                    <td>联系电话</td>
+	                    <td colspan="3">
+	                        <input type="text" name="telephone" id="telephone" class="easyui-validatebox" required="true" />
+	                    </td>
+	                </tr>
+	                <tr><td>备注:</td><td colspan="3"><textarea style="width:80%"></textarea></td></tr>
+	                <tr>
+	                   <td>选择角色:</td>
+	                       <td colspan="3" id="roleTd">
+	                       </td>
+	                </tr>
+	           </table>
+	       </form>
+	    </div>
+    </div>
 </body>
 </html>

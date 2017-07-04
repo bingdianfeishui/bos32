@@ -3,7 +3,7 @@ package com.itheima.bos.action.base;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import net.sf.json.JSONArray;
@@ -126,7 +126,7 @@ public abstract class BaseAction<T> extends ActionSupport implements
      * @param o
      * @param exclueds
      */
-    public void java2Json(@SuppressWarnings("rawtypes") List o ,String[] exclueds){
+    public void java2Json(@SuppressWarnings("rawtypes") Collection o ,String[] exclueds){
         JsonConfig jsonConfig = new JsonConfig();
         //指定哪些属性不需要转json
         jsonConfig.setExcludes(exclueds);

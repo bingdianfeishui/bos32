@@ -124,7 +124,7 @@
 							<ul id="functionTree" class="ztree"></ul>
 						</td>
 					</tr>
-					</table>
+				</table>
 			</form>
 		</div>
 </body>

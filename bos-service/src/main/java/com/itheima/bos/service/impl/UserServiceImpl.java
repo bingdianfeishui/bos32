@@ -63,4 +63,22 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    @Override
+    public void saveOrUpdate(User user, String[] roleIds) {
+        user.setPassword(MD5Utils.md5(user.getPassword()));
+        userDao.saveOrUpdate(user);
+        if(roleIds !=null && roleIds.length > 0){
+            for (String id : roleIds) {
+                Role role = new Role();
+                role.setId(id);
+                user.getRoles().add(role);
+            }
+        }
+    }
+
+    @Override
+    public User findById(String id) {
+        return userDao.findById(id);
+    }
+
 }

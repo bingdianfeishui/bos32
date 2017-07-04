@@ -27,4 +27,8 @@ public interface IUserService {
     void delete(User user);
 
     void save(User user);
+
+    void saveOrUpdate(User model, String[] roleIds);
+
+    User findById(String id);
 }
